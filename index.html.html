@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Teacher Ji - Your Literary Companion</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- jsPDF for PDF generation with Watermark -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#060b19',
+                            800: '#0f172a',
+                            700: '#1e293b',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #060b19;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .glow-cyan { box-shadow: 0 0 20px rgba(34, 211, 238, 0.4); }
+        .glow-purple { box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+        .glow-gold { box-shadow: 0 0 20px rgba(250, 204, 21, 0.4); }
+        
+        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-lift:hover { transform: translateY(-5px); }
+
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid #22d3ee;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-cyan-500 selection:text-white">
+
+    <header class="fixed w-full z-50 bg-navy-900/80 backdrop-blur-lg border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-1 shadow-[0_0_15px_rgba(250,204,21,0.5)]">
+                        <img src="Logo.png" alt="Logo" class="w-full h-full object-contain rounded-full" onerror="this.src='https://placehold.co/100x100/000000/fbbf24?text=ET'">
+                    </div>
+                    <a href="#" class="text-xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-500">English Teacher Ji</a>
+                </div>
+                
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Home</a>
+                    <a href="#mastering" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Summaries</a>
+                    <a href="#mastering" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Characters</a>
+                    <a href="#exams" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Exams</a>
+                    <a href="#community" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Community</a>
+                    <a href="#contact" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Contact</a>
+                </nav>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-navy-800 border-t border-white/10">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block px-3 py-2 text-base font-medium text-white hover:text-cyan-400">Home</a>
+                <a href="#mastering" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-cyan-400">Summaries</a>
+                <a href="#exams" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-cyan-400">Exams</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-cyan-400">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="relative pt-28 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500 via-blue-600 to-yellow-500 opacity-90"></div>
+        <div class="absolute inset-0 bg-black/20"></div>
+
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
+            <div class="w-40 h-40 md:w-48 md:h-48 rounded-full bg-navy-900 border-4 border-navy-900 p-2 shadow-[0_0_40px_rgba(0,0,0,0.5)] mb-8 relative z-10 flex items-center justify-center">
+                <img src="Logo.png" alt="Avatar" class="w-full h-full object-contain rounded-full bg-black" onerror="this.src='https://placehold.co/200x200/000000/fbbf24?text=ET'">
+            </div>
+
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white drop-shadow-lg">
+                English Teacher Ji:<br />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-500">Your Literary Companion</span>
+            </h1>
+            
+            <a href="#mastering" class="mt-4 bg-gradient-to-r from-cyan-400 to-teal-400 hover:from-cyan-300 hover:to-teal-300 text-navy-900 font-bold text-lg px-8 py-3 rounded-full transition duration-300 shadow-[0_0_20px_rgba(45,212,191,0.6)] hover:scale-105 inline-block">
+                Start Your Journey
+            </a>
+        </div>
+    </section>
+
+    <section id="mastering" class="py-20 bg-navy-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Mastering English Literature</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Cyan Card -->
+                <div class="p-1 rounded-2xl bg-gradient-to-br from-cyan-300 to-cyan-600 glow-cyan hover-lift h-full">
+                    <div class="bg-navy-800 rounded-xl p-8 h-full flex flex-col items-center text-center">
+                        <h3 class="font-bold text-xl mb-4 text-cyan-400">Comprehensive Summaries</h3>
+                        <p class="text-gray-300 text-sm mb-6 flex-grow">Deep comprehensive summaries covering classical and modern English Literature.</p>
+                        <div class="text-4xl text-cyan-400"><i class="fa-solid fa-book-open"></i> <i class="fa-solid fa-book ml-2 text-cyan-600"></i></div>
+                    </div>
+                </div>
+
+                <!-- Purple Card -->
+                <div class="p-1 rounded-2xl bg-gradient-to-br from-purple-300 to-purple-600 glow-purple hover-lift transform md:-translate-y-4 h-full">
+                    <div class="bg-navy-800 rounded-xl p-8 h-full flex flex-col items-center text-center">
+                        <h3 class="font-bold text-xl mb-4 text-purple-400">Deep Character Analysis</h3>
+                        <p class="text-gray-300 text-sm mb-6 flex-grow">Learn deep narrative analysis, motivations, and psychological character studies.</p>
+                        <div class="flex justify-center -space-x-4 text-4xl">
+                            <i class="fa-solid fa-circle-user text-purple-300"></i>
+                            <i class="fa-solid fa-circle-user text-purple-400 relative z-10"></i>
+                            <i class="fa-solid fa-circle-user text-purple-500"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gold Card -->
+                <div class="p-1 rounded-2xl bg-gradient-to-br from-yellow-300 to-yellow-600 glow-gold hover-lift h-full">
+                    <div class="bg-navy-800 rounded-xl p-8 h-full flex flex-col items-center text-center">
+                        <h3 class="font-bold text-xl mb-4 text-yellow-400">Exam-Oriented Q&A</h3>
+                        <p class="text-gray-300 text-sm mb-6 flex-grow">Exam-oriented Q&A of all our content, diligently structured for competitive exams.</p>
+                        <div class="text-4xl text-yellow-400"><i class="fa-solid fa-clipboard-check"></i> <i class="fa-solid fa-shield-halved ml-2 text-yellow-600"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="exams" class="py-16 bg-navy-800 relative border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Exam Prep Resources</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-400 to-cyan-400 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Empty Container for Firebase Data -->
+            <div id="exam-resources-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[300px]">
+                <div class="col-span-full flex justify-center items-center h-full">
+                    <div class="loader"></div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-white font-bold px-8 py-3 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.4)] transition duration-300 hover:scale-105">
+                    Start Learning
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="community" class="py-16 bg-navy-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">Latest Lessons</h2>
+                    <div class="w-20 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- Video 1 -->
+                <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="block group relative aspect-video rounded-xl overflow-hidden cursor-pointer shadow-lg hover-lift bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-500 p-1">
+                    <div class="absolute inset-1 bg-navy-900 rounded-lg opacity-20 group-hover:opacity-0 transition duration-300"></div>
+                    <div class="absolute inset-0 flex items-center justify-center z-10">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300 shadow-lg">
+                            <i class="fa-solid fa-play text-2xl text-white ml-1"></i>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-2 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10">
+                        <h3 class="text-white font-bold text-lg drop-shadow-md">Macbeth</h3>
+                    </div>
+                </a>
+
+                <!-- Video 2 -->
+                <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="block group relative aspect-video rounded-xl overflow-hidden cursor-pointer shadow-lg hover-lift bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 p-1">
+                    <div class="absolute inset-1 bg-navy-900 rounded-lg opacity-20 group-hover:opacity-0 transition duration-300"></div>
+                    <div class="absolute inset-0 flex items-center justify-center z-10">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300 shadow-lg">
+                            <i class="fa-solid fa-play text-2xl text-white ml-1"></i>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-2 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10">
+                        <h3 class="text-white font-bold text-lg drop-shadow-md">Twelfth Night</h3>
+                    </div>
+                </a>
+
+                <!-- Video 3 -->
+                <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="block group relative aspect-video rounded-xl overflow-hidden cursor-pointer shadow-lg hover-lift bg-gradient-to-br from-green-400 via-teal-500 to-blue-500 p-1">
+                    <div class="absolute inset-1 bg-navy-900 rounded-lg opacity-20 group-hover:opacity-0 transition duration-300"></div>
+                    <div class="absolute inset-0 flex items-center justify-center z-10">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300 shadow-lg">
+                            <i class="fa-solid fa-play text-2xl text-white ml-1"></i>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-2 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10">
+                        <h3 class="text-white font-bold text-lg drop-shadow-md">As You Like It</h3>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="mt-10 text-center">
+                <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="inline-block bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold px-8 py-2 rounded-full shadow-lg transition duration-300 hover:scale-105">
+                    View More on YouTube
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-[#030610] pt-16 pb-8 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <h3 class="text-yellow-400 font-bold text-lg mb-6">Social Links</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://www.facebook.com/englishteacherji/" target="_blank" class="w-10 h-10 rounded-full bg-[#3b5998] flex items-center justify-center text-white hover:scale-110 transition shadow-lg"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="w-10 h-10 rounded-full bg-[#ff0000] flex items-center justify-center text-white hover:scale-110 transition shadow-lg"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-yellow-400 font-bold text-lg mb-6">Sitemap</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-400"></div> BSEB</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-400"></div> Calcutta University</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-400"></div> Exams</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-400"></div> Community</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-400"></div> Contact</li>
+                        <li><button id="admin-open-btn" class="text-purple-400 hover:text-purple-300 transition text-xs mt-4 flex items-center gap-2"><i class="fa-solid fa-lock"></i> Admin Access</button></li>
+                    </ul>
+                </div>
+                
+                <!-- Third Column placeholder for balance if needed, or you can adjust grid-cols -->
+                <div></div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 text-center text-xs text-gray-500">
+                <p>&copy; 2026 English Teacher Ji. All rights reserved.</p>
+                <!-- Admin Access Button -->
+                <div class="mt-4">
+                    <button id="admin-login-btn" class="text-gray-600 hover:text-yellow-400 transition flex items-center justify-center gap-2 mx-auto focus:outline-none">
+                        <i class="fa-solid fa-lock"></i> Admin Access
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Resource Modal for PDF Download -->
+    <div id="resource-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div id="modal-panel" class="bg-navy-800 border border-cyan-500/50 shadow-[0_0_30px_rgba(34,211,238,0.3)] rounded-2xl w-11/12 max-w-2xl max-h-[85vh] flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-navy-900">
+                <h3 id="modal-title" class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 flex items-center gap-3">
+                    <i id="modal-icon" class="fa-solid fa-file-pdf text-cyan-400 text-xl"></i> 
+                    <span id="modal-title-text">Resource Title</span>
+                </h3>
+                <button id="close-modal" class="text-gray-400 hover:text-white transition focus:outline-none">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+            <!-- Ensure modal content expands correctly -->
+            <div class="p-6 overflow-y-auto flex-grow bg-navy-800 text-gray-300 text-base leading-relaxed" id="modal-content">
+                Loading content...
+            </div>
+            <div class="p-6 border-t border-white/10 bg-navy-900 flex justify-end">
+                <button id="download-btn" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.4)] transition duration-300 hover:scale-105 flex items-center gap-3 text-lg">
+                    <i class="fa-solid fa-download"></i> Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Prompt Modal -->
+    <div id="password-modal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div id="password-panel" class="bg-navy-800 border border-yellow-500/50 shadow-[0_0_30px_rgba(250,204,21,0.3)] rounded-2xl w-11/12 max-w-sm p-6 transform scale-95 transition-transform duration-300 text-center">
+            <h3 class="text-xl font-bold text-white mb-4"><i class="fa-solid fa-lock text-yellow-400 mr-2"></i> Admin Login</h3>
+            <input type="password" id="admin-password-input" placeholder="Enter Password" class="w-full bg-navy-900 border border-white/20 rounded-lg px-4 py-3 text-white mb-6 focus:outline-none focus:border-yellow-400">
+            <div class="flex justify-end gap-4">
+                <button id="cancel-password-btn" class="text-gray-400 hover:text-white transition">Cancel</button>
+                <button id="submit-password-btn" class="bg-yellow-500 hover:bg-yellow-400 text-navy-900 font-bold py-2 px-6 rounded-lg transition shadow-lg">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div id="alert-modal" class="fixed inset-0 z-[120] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div id="alert-panel" class="bg-navy-800 border border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.3)] rounded-2xl w-11/12 max-w-sm p-6 transform scale-95 transition-transform duration-300 text-center">
+            <i class="fa-solid fa-circle-exclamation text-red-500 text-4xl mb-4"></i>
+            <p id="alert-message" class="text-white text-lg mb-6"></p>
+            <button id="close-alert-btn" class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-8 rounded-lg transition shadow-lg">OK</button>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Modal -->
+    <div id="admin-modal" class="fixed inset-0 z-[105] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div id="admin-panel" class="bg-navy-800 border border-purple-500/50 shadow-[0_0_30px_rgba(168,85,247,0.3)] rounded-2xl w-11/12 max-w-3xl max-h-[90vh] flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-navy-900">
+                <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 flex items-center gap-3">
+                    <i class="fa-solid fa-user-shield text-purple-400 text-xl"></i> 
+                    Admin Dashboard
+                </h3>
+                <button id="close-admin-btn" class="text-gray-400 hover:text-white transition focus:outline-none">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-grow flex flex-col gap-4">
+                <p class="text-gray-300 text-sm mb-2">Select a category and topic to edit its content.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-cyan-400 font-medium mb-2 text-sm">Category</label>
+                        <select id="admin-category-select" class="w-full bg-navy-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-400">
+                            <option value="">Select Category...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-cyan-400 font-medium mb-2 text-sm">Topic</label>
+                        <select id="admin-topic-select" class="w-full bg-navy-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-400" disabled>
+                            <option value="">Select Topic...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-4 flex-grow flex flex-col">
+                    <label class="block text-cyan-400 font-medium mb-2 text-sm">Content for PDF</label>
+                    <textarea id="admin-content-textarea" class="w-full flex-grow min-h-[200px] bg-navy-900 border border-white/20 rounded-lg px-4 py-3 text-gray-300 focus:outline-none focus:border-purple-400 font-mono text-sm" disabled></textarea>
+                </div>
+            </div>
+            <div class="p-6 border-t border-white/10 bg-navy-900 flex justify-end gap-4">
+                <span id="admin-save-status" class="text-green-400 flex items-center hidden"><i class="fa-solid fa-check mr-2"></i> Saved!</span>
+                <button id="admin-save-btn" class="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 text-white font-bold py-2 px-8 rounded-lg shadow-lg transition duration-300 hover:scale-105" disabled>
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, getDocs, addDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // DOM Elements
+        const container = document.getElementById('exam-resources-container');
+        const modal = document.getElementById('resource-modal');
+        const modalPanel = document.getElementById('modal-panel');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalTitleText = document.getElementById('modal-title-text');
+        const modalContent = document.getElementById('modal-content');
+        const modalIcon = document.getElementById('modal-icon');
+        const downloadBtn = document.getElementById('download-btn');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        // Admin DOM Elements
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        const passwordModal = document.getElementById('password-modal');
+        const passwordPanel = document.getElementById('password-panel');
+        const adminPasswordInput = document.getElementById('admin-password-input');
+        const submitPasswordBtn = document.getElementById('submit-password-btn');
+        const cancelPasswordBtn = document.getElementById('cancel-password-btn');
+        
+        const alertModal = document.getElementById('alert-modal');
+        const alertPanel = document.getElementById('alert-panel');
+        const alertMessage = document.getElementById('alert-message');
+        const closeAlertBtn = document.getElementById('close-alert-btn');
+        
+        const adminModal = document.getElementById('admin-modal');
+        const adminPanel = document.getElementById('admin-panel');
+        const closeAdminBtn = document.getElementById('close-admin-btn');
+        const adminCategorySelect = document.getElementById('admin-category-select');
+        const adminTopicSelect = document.getElementById('admin-topic-select');
+        const adminContentTextarea = document.getElementById('admin-content-textarea');
+        const adminSaveBtn = document.getElementById('admin-save-btn');
+        const adminSaveStatus = document.getElementById('admin-save-status');
+        
+        let currentUser = null;
+        let currentDownloadContent = "";
+        let currentDownloadTitle = "";
+        let dbInstance = null; // Store db reference globally for admin edits
+        let globalResourcesData = []; // Store fetched data for admin panel
+
+        // Default Exam Resources Data
+        const defaultExamResources = [
+            {
+                title: "BSEB Class 12",
+                order: 1,
+                themeClass: "from-purple-500 to-purple-800",
+                borderClass: "border-purple-400/30",
+                links: [
+                    { name: "Syllabus Overview", icon: "fa-graduation-cap", content: "BSEB Class 12 English Syllabus 2026.\n\nSection A: Prose\n1. Indian Civilization and Culture\n2. Bharat is My Home\n...\n\nSection B: Poetry\n1. Sweetest Love I Do Not Goe\n2. Song of Myself" },
+                    { name: "Objective Q&A", icon: "fa-book-open-reader", content: "Important Objective Questions for Board Exams.\n\nQ1: Who wrote 'Macbeth'?\nA: William Shakespeare.\n\nQ2: What is the main theme of 'Bharat is My Home'?\nA: Nation building and dedication." },
+                    { name: "Model Papers", icon: "fa-regular fa-file-lines", content: "Model Paper Set 1 (2026)\n\nTime: 3 Hours | Max Marks: 100\n\nInstructions: All questions are compulsory. Objective type questions carry 1 mark each." }
+                ]
+            },
+            {
+                title: "WBSLST",
+                order: 2,
+                themeClass: "from-teal-400 to-cyan-600",
+                borderClass: "border-teal-300/30",
+                links: [
+                    { name: "Core Syllabus", icon: "fa-chalkboard-user", content: "WBSLST Core English Syllabus breakdown encompassing British Literature, Indian Writing in English, and literary theory." },
+                    { name: "Mock Tests", icon: "fa-file-pen", content: "Full length Mock Test series designed specifically for the WBSLST pattern." },
+                    { name: "Topic Notes", icon: "fa-layer-group", content: "Detailed notes on Romanticism, Victorian Era, and Modernism for WBSLST aspirants." }
+                ]
+            },
+            {
+                title: "Calcutta Univ (CU)",
+                order: 3,
+                themeClass: "from-blue-500 to-indigo-700",
+                borderClass: "border-blue-400/30",
+                links: [
+                    { name: "BA/MA Notes", icon: "fa-building-columns", content: "Comprehensive lecture notes for Calcutta University BA English Honours and MA Literature students." },
+                    { name: "Semester Guide", icon: "fa-book-bookmark", content: "Semester-wise breakdown of texts, reference books, and marking schemes." },
+                    { name: "Important Qs", icon: "fa-pen-nib", content: "Previous year question analysis and most expected questions for the upcoming CU semester exams." }
+                ]
+            },
+            {
+                title: "B.Ed Notes",
+                order: 4,
+                themeClass: "from-orange-400 to-yellow-600",
+                borderClass: "border-orange-300/30",
+                links: [
+                    { name: "Methodology", icon: "fa-book", content: "Pedagogy of English language teaching, ESL methods, and classroom management techniques." },
+                    { name: "Lesson Plans", icon: "fa-list-check", content: "Ready-to-use lesson plan templates for prose, poetry, and grammar classes." },
+                    { name: "Practicum Guide", icon: "fa-clipboard-question", content: "Guidelines for completing B.Ed practicum files and final teaching observations." }
+                ]
+            }
+        ];
+
+        // Mobile Menu Logic
+        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        const adminOpenBtn = document.getElementById('admin-open-btn');
+
+        function showCustomAlert(message) {
+            alertMessage.textContent = message;
+            alertModal.classList.remove('hidden');
+            setTimeout(() => {
+                alertModal.classList.remove('opacity-0');
+                alertPanel.classList.remove('scale-95');
+            }, 10);
+        }
+
+        closeAlertBtn.addEventListener('click', () => {
+            alertModal.classList.add('opacity-0');
+            alertPanel.classList.add('scale-95');
+            setTimeout(() => {
+                alertModal.classList.add('hidden');
+            }, 300);
+        });
+
+        // Admin Password Login Logic
+        const showPasswordPrompt = (e) => {
+            if(e) e.preventDefault();
+            adminPasswordInput.value = '';
+            passwordModal.classList.remove('hidden');
+            setTimeout(() => {
+                passwordModal.classList.remove('opacity-0');
+                passwordPanel.classList.remove('scale-95');
+                adminPasswordInput.focus();
+            }, 10);
+        };
+
+        adminLoginBtn.addEventListener('click', showPasswordPrompt);
+        if (adminOpenBtn) adminOpenBtn.addEventListener('click', showPasswordPrompt);
+
+        function closePasswordModal() {
+            passwordModal.classList.add('opacity-0');
+            passwordPanel.classList.add('scale-95');
+            setTimeout(() => {
+                passwordModal.classList.add('hidden');
+            }, 300);
+        }
+
+        cancelPasswordBtn.addEventListener('click', closePasswordModal);
+
+        submitPasswordBtn.addEventListener('click', () => {
+            if (adminPasswordInput.value === 'admin125995') {
+                closePasswordModal();
+                openAdminDashboard();
+            } else {
+                showCustomAlert('Incorrect password. Access denied.');
+            }
+        });
+        
+        adminPasswordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') submitPasswordBtn.click();
+        });
+
+        // Admin Dashboard Logic
+        function openAdminDashboard() {
+            populateAdminCategories();
+            adminModal.classList.remove('hidden');
+            setTimeout(() => {
+                adminModal.classList.remove('opacity-0');
+                adminPanel.classList.remove('scale-95');
+            }, 10);
+        }
+
+        closeAdminBtn.addEventListener('click', () => {
+            adminModal.classList.add('opacity-0');
+            adminPanel.classList.add('scale-95');
+            setTimeout(() => {
+                adminModal.classList.add('hidden');
+            }, 300);
+        });
+
+        function populateAdminCategories() {
+            adminCategorySelect.innerHTML = '<option value="">Select Category...</option>';
+            globalResourcesData.forEach(cat => {
+                const option = document.createElement('option');
+                // Use ID if available, otherwise fallback to title
+                option.value = cat.id || cat.title; 
+                option.textContent = cat.title;
+                adminCategorySelect.appendChild(option);
+            });
+            adminTopicSelect.innerHTML = '<option value="">Select Topic...</option>';
+            adminTopicSelect.disabled = true;
+            adminContentTextarea.value = '';
+            adminContentTextarea.disabled = true;
+            adminSaveBtn.disabled = true;
+        }
+
+        adminCategorySelect.addEventListener('change', (e) => {
+            const catId = e.target.value;
+            adminTopicSelect.innerHTML = '<option value="">Select Topic...</option>';
+            adminContentTextarea.value = '';
+            adminContentTextarea.disabled = true;
+            adminSaveBtn.disabled = true;
+
+            if (catId) {
+                // Match by either id or title
+                const category = globalResourcesData.find(c => (c.id || c.title) === catId);
+                if (category && category.links) {
+                    category.links.forEach((link, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.textContent = link.name;
+                        adminTopicSelect.appendChild(option);
+                    });
+                    adminTopicSelect.disabled = false;
+                }
+            } else {
+                adminTopicSelect.disabled = true;
+            }
+        });
+
+        adminTopicSelect.addEventListener('change', (e) => {
+            const catId = adminCategorySelect.value;
+            const topicIndex = e.target.value;
+            
+            if (catId && topicIndex !== "") {
+                const category = globalResourcesData.find(c => (c.id || c.title) === catId);
+                if (category && category.links[topicIndex]) {
+                    adminContentTextarea.value = category.links[topicIndex].content;
+                    adminContentTextarea.disabled = false;
+                    adminSaveBtn.disabled = false;
+                }
+            } else {
+                adminContentTextarea.value = '';
+                adminContentTextarea.disabled = true;
+                adminSaveBtn.disabled = true;
+            }
+        });
+
+        adminSaveBtn.addEventListener('click', async () => {
+            const catId = adminCategorySelect.value;
+            const topicIndex = adminTopicSelect.value;
+            const newContent = adminContentTextarea.value;
+            
+            if (catId && topicIndex !== "") {
+                try {
+                    const category = globalResourcesData.find(c => (c.id || c.title) === catId);
+                    
+                    // Clone the links array to update safely
+                    const updatedLinks = [...category.links];
+                    updatedLinks[topicIndex].content = newContent;
+                    
+                    adminSaveBtn.disabled = true;
+                    adminSaveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+                    
+                    // 1. Instantly update local memory so the UI and PDFs reflect the change immediately
+                    category.links = updatedLinks;
+                    renderResources(globalResourcesData);
+                    
+                    // 2. Attempt to save to Firebase if it's connected
+                    if (dbInstance && category.id) {
+                        const appId = typeof __app_id !== 'undefined' ? __app_id : 'english-teacher-ji';
+                        const docRef = doc(dbInstance, 'artifacts', appId, 'public', 'data', 'examResources', category.id);
+                        await updateDoc(docRef, { links: updatedLinks });
+                    }
+                    
+                    adminSaveBtn.innerHTML = 'Save Changes';
+                    adminSaveBtn.disabled = false;
+                    
+                    adminSaveStatus.classList.remove('hidden');
+                    setTimeout(() => {
+                        adminSaveStatus.classList.add('hidden');
+                    }, 3000);
+                    
+                } catch (err) {
+                    console.error("Save error:", err);
+                    showCustomAlert("Cloud save failed, but your changes are saved temporarily for this session.");
+                    adminSaveBtn.innerHTML = 'Save Changes';
+                    adminSaveBtn.disabled = false;
+                }
+            }
+        });
+
+        // Modal Logic
+        function openModal(title, iconClass, content) {
+            modalTitleText.innerText = title;
+            modalIcon.className = `fa-solid ${iconClass} text-cyan-400 text-xl`;
+            modalContent.innerHTML = `<p class="whitespace-pre-wrap">${content}</p>`;
+            currentDownloadContent = content;
+            currentDownloadTitle = title;
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalPanel.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalPanel.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // jsPDF Download Logic with Watermark
+        downloadBtn.addEventListener('click', () => {
+            if (!currentDownloadContent) return;
+            
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // 1. ADD WATERMARK FIRST
+                doc.setTextColor(220, 220, 220); // Light gray
+                doc.setFontSize(50);
+                // Center watermark diagonally
+                doc.text("English Teacher Ji", doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2, { angle: 45, align: "center" });
+                
+                // Reset styling for the main content
+                doc.setTextColor(0, 0, 0); // Reset to black
+                doc.setFontSize(12); // Reset to normal size
+                
+                // 2. ADD MAIN CONTENT
+                // Title
+                doc.setTextColor(6, 11, 25); // Dark Navy
+                doc.setFontSize(18);
+                doc.setFont("helvetica", "bold");
+                doc.text(currentDownloadTitle, 20, 20);
+                
+                // Cyan accent line below title
+                doc.setDrawColor(34, 211, 238);
+                doc.setLineWidth(0.8);
+                doc.line(20, 25, 190, 25);
+                
+                // Body text
+                doc.setTextColor(40, 40, 40); // Dark grey
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "normal");
+                
+                // Word wrap text to fit A4 width margins
+                const splitText = doc.splitTextToSize(currentDownloadContent, 170);
+                doc.text(splitText, 20, 35);
+                
+                // Save file
+                const filename = currentDownloadTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + "_study_material.pdf";
+                doc.save(filename);
+
+                // Visual Feedback on Button
+                const originalText = downloadBtn.innerHTML;
+                downloadBtn.innerHTML = `<i class="fa-solid fa-check"></i> Downloaded PDF!`;
+                downloadBtn.classList.add('from-green-500', 'to-emerald-600');
+                setTimeout(() => {
+                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.classList.remove('from-green-500', 'to-emerald-600');
+                }, 3000);
+            } catch (err) {
+                console.error("PDF generation failed:", err);
+                showCustomAlert("Failed to generate PDF. Make sure jsPDF is loaded correctly.");
+            }
+        });
+
+        // Initialize Firebase
+        async function initApp() {
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'english-teacher-ji';
+                const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+                
+                if (Object.keys(firebaseConfig).length > 0) {
+                    const app = initializeApp(firebaseConfig);
+                    const db = getFirestore(app);
+                    dbInstance = db; // Store database for admin saves
+                    const auth = getAuth(app);
+                    
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    
+                    currentUser = auth.currentUser;
+                    if (!currentUser) return;
+
+                    dbInstance = db;
+
+                    const resourcesRef = collection(db, 'artifacts', appId, 'public', 'data', 'examResources');
+                    
+                    // Check and seed DB
+                    const snapshot = await getDocs(resourcesRef);
+                    if (snapshot.empty) {
+                        for (const resource of defaultExamResources) {
+                            await addDoc(resourcesRef, resource);
+                        }
+                    }
+
+                    // Listen for live updates
+                    onSnapshot(resourcesRef, (snap) => {
+                        if (snap.empty) {
+                            globalResourcesData = [...defaultExamResources];
+                            renderResources(defaultExamResources);
+                            return;
+                        }
+                        
+                        let resourcesData = [];
+                        snap.forEach(doc => {
+                            resourcesData.push({id: doc.id, ...doc.data()});
+                        });
+                        
+                        // Sort by order so they render properly
+                        resourcesData.sort((a, b) => a.order - b.order);
+                        globalResourcesData = resourcesData; // Cache data for admin dashboard
+                        renderResources(resourcesData);
+                        
+                    }, (error) => {
+                        console.error("Error fetching resources:", error);
+                        globalResourcesData = [...defaultExamResources];
+                        renderResources(defaultExamResources); // fallback
+                    });
+                } else {
+                    // Fallback if no firebase config provided in environment
+                    globalResourcesData = [...defaultExamResources];
+                    renderResources(defaultExamResources);
+                }
+            } catch (error) {
+                console.error("Initialization failed:", error);
+                globalResourcesData = [...defaultExamResources];
+                renderResources(defaultExamResources); // fallback
+            }
+        }
+
+        // Render Dynamic Grid Cards
+        function renderResources(categories) {
+            container.innerHTML = ''; 
+            
+            categories.forEach(category => {
+                // Fixed Layout: Using h-full and flex column to ensure content doesn't overlap
+                const card = document.createElement('div');
+                card.className = `bg-gradient-to-br ${category.themeClass} rounded-2xl p-6 shadow-lg hover-lift border ${category.borderClass} h-full flex flex-col`;
+                
+                let linksHTML = '';
+                category.links.forEach((link, index) => {
+                    linksHTML += `
+                        <li class="mb-3 last:mb-0">
+                            <button data-cat-id="${category.id || category.title}" data-link-index="${index}" class="resource-btn w-full text-left flex items-start sm:items-center text-gray-100 hover:text-white transition group leading-snug">
+                                <i class="fa-solid ${link.icon} w-6 mt-1 sm:mt-0 flex-shrink-0 group-hover:scale-110 transition-transform text-yellow-300/80 group-hover:text-yellow-300"></i> 
+                                <span>${link.name}</span>
+                            </button>
+                        </li>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <h3 class="text-xl font-bold text-white mb-4 border-b border-white/20 pb-2 flex-shrink-0">${category.title}</h3>
+                    <ul class="flex-grow flex flex-col justify-start">
+                        ${linksHTML}
+                    </ul>
+                `;
+                container.appendChild(card);
+            });
+
+            // Re-attach event listeners for newly rendered buttons
+            document.querySelectorAll('.resource-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const catId = e.currentTarget.getAttribute('data-cat-id');
+                    const linkIndex = e.currentTarget.getAttribute('data-link-index');
+                    const category = categories.find(c => c.id === catId || c.title === catId);
+                    
+                    if(category && category.links[linkIndex]) {
+                        const resource = category.links[linkIndex];
+                        openModal(`${category.title}: ${resource.name}`, resource.icon, resource.content);
+                    }
+                });
+            });
+        }
+
+        // Boot up
+        initApp();
+    </script>
+</body>
+</html>
