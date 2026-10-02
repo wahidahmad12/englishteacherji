@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Teacher Ji - Your Literary Companion</title>
+    <title>English Teacher Ji - Premium Literary Companion</title>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Poppins (Modern) & Playfair Display (Elegant/Literary) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,7 +16,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- jsPDF for PDF generation with Watermark -->
+    <!-- jsPDF for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <script>
@@ -24,14 +24,24 @@
             theme: {
                 extend: {
                     colors: {
-                        navy: {
-                            900: '#060b19',
-                            800: '#0f172a',
-                            700: '#1e293b',
-                        }
+                        dark: '#050505',
+                        darker: '#0a0a0a',
+                        gold: { 400: '#FBBF24', 500: '#F59E0B' }
                     },
                     fontFamily: {
                         sans: ['Poppins', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
                     }
                 }
             }
@@ -40,346 +50,430 @@
     
     <style>
         body {
-            background-color: #060b19;
+            background-color: #050505;
             color: #ffffff;
             overflow-x: hidden;
         }
         
-        .glow-cyan { box-shadow: 0 0 20px rgba(34, 211, 238, 0.4); }
-        .glow-purple { box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
-        .glow-gold { box-shadow: 0 0 20px rgba(250, 204, 21, 0.4); }
+        /* Premium Glassmorphism */
+        .glass-panel {
+            background: rgba(25, 25, 25, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
         
-        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .hover-lift:hover { transform: translateY(-5px); }
+        .glass-card:hover {
+            background: rgba(40, 40, 40, 0.6);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(251, 191, 36, 0.15);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FBBF24; }
+
+        .hover-lift { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        .text-gradient-gold {
+            background: linear-gradient(to right, #FDE68A, #F59E0B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
         .loader {
-            border: 3px solid rgba(255, 255, 255, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.05);
             border-radius: 50%;
-            border-top: 3px solid #22d3ee;
+            border-top: 3px solid #FBBF24;
             width: 40px;
             height: 40px;
             animation: spin 1s linear infinite;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-cyan-500 selection:text-white">
+<body class="font-sans antialiased selection:bg-gold-500 selection:text-black relative">
 
-    <header class="fixed w-full z-50 bg-navy-900/80 backdrop-blur-lg border-b border-white/10">
+    <!-- Ambient Background Glows -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-900/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
+        <div class="absolute top-40 right-1/4 w-96 h-96 bg-yellow-900/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-32 left-1/2 w-96 h-96 bg-blue-900/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-4000"></div>
+    </div>
+
+    <header class="fixed w-full z-50 glass-panel border-b-0 border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex-shrink-0 flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-1 shadow-[0_0_15px_rgba(250,204,21,0.5)]">
-                        <img src="Logo.png" alt="Logo" class="w-full h-full object-contain rounded-full" onerror="this.src='https://placehold.co/100x100/000000/fbbf24?text=ET'">
+            <div class="flex justify-between items-center h-24">
+                <div class="flex-shrink-0 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center p-0.5 bg-gradient-to-tr from-yellow-600 to-yellow-200 shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+                        <img src="Logo.png" alt="Logo" class="w-full h-full object-cover rounded-full bg-black border-2 border-black" onerror="this.src='https://placehold.co/100x100/050505/fbbf24?text=ET'">
                     </div>
-                    <a href="#" class="text-xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-500">English Teacher Ji</a>
+                    <a href="#" class="text-2xl font-serif font-bold tracking-wide text-white">English Teacher <span class="text-gradient-gold">Ji</span></a>
                 </div>
                 
                 <nav class="hidden md:flex space-x-8 items-center">
-                    <a href="#home" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Home</a>
-                    <a href="#mastering" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Summaries</a>
-                    <a href="#mastering" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Characters</a>
-                    <a href="#exams" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Exams</a>
-                    <a href="#community" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Community</a>
-                    <a href="#contact" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Contact</a>
+                    <a href="#home" class="text-gray-300 hover:text-gold-400 transition text-sm font-medium tracking-wide uppercase">Home</a>
+                    <a href="#courses" class="text-gray-300 hover:text-gold-400 transition text-sm font-medium tracking-wide uppercase">Courses</a>
+                    <a href="#mastering" class="text-gray-300 hover:text-gold-400 transition text-sm font-medium tracking-wide uppercase">Summaries</a>
+                    <a href="#exams" class="text-gray-300 hover:text-gold-400 transition text-sm font-medium tracking-wide uppercase">Exams</a>
+                    <a href="mailto:englishteacherji2020@gmail.com" class="text-gray-300 hover:text-gold-400 transition text-sm font-medium tracking-wide uppercase">Contact</a>
+                    
+                    <button id="admin-login-btn" class="ml-6 flex items-center gap-2 text-gold-400 border border-gold-400/30 hover:bg-gold-400 hover:text-black transition-all duration-300 text-sm font-semibold px-5 py-2.5 rounded-full">
+                        <i class="fa-solid fa-lock text-xs"></i> Admin
+                    </button>
                 </nav>
 
                 <div class="md:hidden flex items-center">
                     <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
-                        <i class="fa-solid fa-bars text-2xl"></i>
+                        <i class="fa-solid fa-bars-staggered text-2xl"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-navy-800 border-t border-white/10">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#home" class="block px-3 py-2 text-base font-medium text-white hover:text-cyan-400">Home</a>
-                <a href="#mastering" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-cyan-400">Summaries</a>
-                <a href="#exams" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-cyan-400">Exams</a>
-                <a href="#contact" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-cyan-400">Contact</a>
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/5 absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" class="block px-3 py-3 text-base font-medium text-white hover:text-gold-400 rounded-lg hover:bg-white/5">Home</a>
+                <a href="#courses" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-gold-400 rounded-lg hover:bg-white/5">Courses</a>
+                <a href="#mastering" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-gold-400 rounded-lg hover:bg-white/5">Summaries</a>
+                <a href="#exams" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-gold-400 rounded-lg hover:bg-white/5">Exams</a>
+                <a href="mailto:englishteacherji2020@gmail.com" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-gold-400 rounded-lg hover:bg-white/5">Contact</a>
+                <div class="border-t border-white/10 mt-4 pt-4">
+                    <button id="admin-open-btn" class="w-full flex items-center justify-center gap-2 px-3 py-3 text-base font-bold text-black bg-gold-400 hover:bg-gold-500 rounded-lg transition">
+                        <i class="fa-solid fa-lock"></i> Admin Login
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
-    <section id="home" class="relative pt-28 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500 via-blue-600 to-yellow-500 opacity-90"></div>
-        <div class="absolute inset-0 bg-black/20"></div>
-
-        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
-            <div class="w-40 h-40 md:w-48 md:h-48 rounded-full bg-navy-900 border-4 border-navy-900 p-2 shadow-[0_0_40px_rgba(0,0,0,0.5)] mb-8 relative z-10 flex items-center justify-center">
-                <img src="Logo.png" alt="Avatar" class="w-full h-full object-contain rounded-full bg-black" onerror="this.src='https://placehold.co/200x200/000000/fbbf24?text=ET'">
+    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 flex items-center min-h-[90vh]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="max-w-3xl mx-auto text-center">
+                <div class="inline-block mb-6 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-sm text-gold-400 font-medium tracking-wider uppercase">
+                    <i class="fa-solid fa-star text-xs mr-2"></i> Elevate Your English
+                </div>
+                
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight mb-6 text-white">
+                    Master Literature with <br />
+                    <span class="text-gradient-gold italic">English Teacher Ji</span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-gray-400 mb-10 font-light max-w-2xl mx-auto leading-relaxed">
+                    Your premium literary companion for deep character analysis, comprehensive summaries, and expert exam preparation.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#courses" class="bg-gradient-to-r from-yellow-600 to-yellow-400 hover:from-yellow-500 hover:to-yellow-300 text-black font-semibold text-lg px-8 py-4 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(251,191,36,0.3)] hover:scale-105 flex items-center justify-center gap-2">
+                        Explore Courses <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#exams" class="glass-panel hover:bg-white/10 text-white font-medium text-lg px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2">
+                        Free Study Material
+                    </a>
+                </div>
             </div>
-
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white drop-shadow-lg">
-                English Teacher Ji:<br />
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-500">Your Literary Companion</span>
-            </h1>
-            
-            <a href="#mastering" class="mt-4 bg-gradient-to-r from-cyan-400 to-teal-400 hover:from-cyan-300 hover:to-teal-300 text-navy-900 font-bold text-lg px-8 py-3 rounded-full transition duration-300 shadow-[0_0_20px_rgba(45,212,191,0.6)] hover:scale-105 inline-block">
-                Start Your Journey
-            </a>
         </div>
     </section>
 
-    <section id="mastering" class="py-20 bg-navy-900 relative">
+    <!-- COURSES SECTION -->
+    <section id="courses" class="py-24 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Mastering English Literature</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto rounded-full"></div>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-4">Premium Courses</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-transparent mx-auto rounded-full"></div>
+            </div>
+
+            <div id="courses-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="col-span-full flex justify-center items-center h-full py-12">
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="mastering" class="py-24 relative bg-darker border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-4">The Literary Edge</h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-purple-500 to-transparent mx-auto rounded-full"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Cyan Card -->
-                <div class="p-1 rounded-2xl bg-gradient-to-br from-cyan-300 to-cyan-600 glow-cyan hover-lift h-full">
-                    <div class="bg-navy-800 rounded-xl p-8 h-full flex flex-col items-center text-center">
-                        <h3 class="font-bold text-xl mb-4 text-cyan-400">Comprehensive Summaries</h3>
-                        <p class="text-gray-300 text-sm mb-6 flex-grow">Deep comprehensive summaries covering classical and modern English Literature.</p>
-                        <div class="text-4xl text-cyan-400"><i class="fa-solid fa-book-open"></i> <i class="fa-solid fa-book ml-2 text-cyan-600"></i></div>
+                <!-- Feature 1 -->
+                <div class="glass-panel glass-card p-10 rounded-2xl flex flex-col items-start hover-lift group">
+                    <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition">
+                        <i class="fa-solid fa-book-open-reader text-2xl text-cyan-400"></i>
                     </div>
+                    <h3 class="font-serif font-bold text-2xl mb-3 text-white group-hover:text-cyan-400 transition">In-Depth Summaries</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Master complex texts with our comprehensive breakdowns covering classical and modern English Literature.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="glass-panel glass-card p-10 rounded-2xl flex flex-col items-start hover-lift group">
+                    <div class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition">
+                        <i class="fa-solid fa-masks-theater text-2xl text-purple-400"></i>
+                    </div>
+                    <h3 class="font-serif font-bold text-2xl mb-3 text-white group-hover:text-purple-400 transition">Character Psychology</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Uncover hidden motives and deep narrative analysis through expert psychological character studies.</p>
                 </div>
 
-                <!-- Purple Card -->
-                <div class="p-1 rounded-2xl bg-gradient-to-br from-purple-300 to-purple-600 glow-purple hover-lift transform md:-translate-y-4 h-full">
-                    <div class="bg-navy-800 rounded-xl p-8 h-full flex flex-col items-center text-center">
-                        <h3 class="font-bold text-xl mb-4 text-purple-400">Deep Character Analysis</h3>
-                        <p class="text-gray-300 text-sm mb-6 flex-grow">Learn deep narrative analysis, motivations, and psychological character studies.</p>
-                        <div class="flex justify-center -space-x-4 text-4xl">
-                            <i class="fa-solid fa-circle-user text-purple-300"></i>
-                            <i class="fa-solid fa-circle-user text-purple-400 relative z-10"></i>
-                            <i class="fa-solid fa-circle-user text-purple-500"></i>
-                        </div>
+                <!-- Feature 3 -->
+                <div class="glass-panel glass-card p-10 rounded-2xl flex flex-col items-start hover-lift group">
+                    <div class="w-14 h-14 rounded-xl bg-gold-500/10 flex items-center justify-center mb-6 group-hover:bg-gold-500/20 transition">
+                        <i class="fa-solid fa-award text-2xl text-gold-400"></i>
                     </div>
-                </div>
-
-                <!-- Gold Card -->
-                <div class="p-1 rounded-2xl bg-gradient-to-br from-yellow-300 to-yellow-600 glow-gold hover-lift h-full">
-                    <div class="bg-navy-800 rounded-xl p-8 h-full flex flex-col items-center text-center">
-                        <h3 class="font-bold text-xl mb-4 text-yellow-400">Exam-Oriented Q&A</h3>
-                        <p class="text-gray-300 text-sm mb-6 flex-grow">Exam-oriented Q&A of all our content, diligently structured for competitive exams.</p>
-                        <div class="text-4xl text-yellow-400"><i class="fa-solid fa-clipboard-check"></i> <i class="fa-solid fa-shield-halved ml-2 text-yellow-600"></i></div>
-                    </div>
+                    <h3 class="font-serif font-bold text-2xl mb-3 text-white group-hover:text-gold-400 transition">Exam Excellence</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Strategically structured Q&A and model papers designed to guarantee top scores in competitive exams.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="exams" class="py-16 bg-navy-800 relative border-y border-white/5">
+    <section id="exams" class="py-24 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Exam Prep Resources</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-purple-400 to-cyan-400 mx-auto rounded-full"></div>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-4">Study Vault</h2>
+                <p class="text-gray-400 text-lg mb-4">Download premium PDF notes directly to your device.</p>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-transparent mx-auto rounded-full"></div>
             </div>
-
-            <!-- Empty Container for Firebase Data -->
+            
             <div id="exam-resources-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[300px]">
                 <div class="col-span-full flex justify-center items-center h-full">
                     <div class="loader"></div>
                 </div>
             </div>
-            
-            <div class="mt-12 text-center">
-                <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="inline-block bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-white font-bold px-8 py-3 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.4)] transition duration-300 hover:scale-105">
-                    Start Learning
-                </a>
-            </div>
         </div>
     </section>
 
-    <section id="community" class="py-16 bg-navy-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-end mb-10">
+    <footer id="contact" class="bg-darker pt-20 pb-10 border-t border-white/5 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">Latest Lessons</h2>
-                    <div class="w-20 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                <!-- Video 1 -->
-                <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="block group relative aspect-video rounded-xl overflow-hidden cursor-pointer shadow-lg hover-lift bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-500 p-1">
-                    <div class="absolute inset-1 bg-navy-900 rounded-lg opacity-20 group-hover:opacity-0 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center z-10">
-                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300 shadow-lg">
-                            <i class="fa-solid fa-play text-2xl text-white ml-1"></i>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-2 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10">
-                        <h3 class="text-white font-bold text-lg drop-shadow-md">Macbeth</h3>
-                    </div>
-                </a>
-
-                <!-- Video 2 -->
-                <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="block group relative aspect-video rounded-xl overflow-hidden cursor-pointer shadow-lg hover-lift bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 p-1">
-                    <div class="absolute inset-1 bg-navy-900 rounded-lg opacity-20 group-hover:opacity-0 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center z-10">
-                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300 shadow-lg">
-                            <i class="fa-solid fa-play text-2xl text-white ml-1"></i>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-2 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10">
-                        <h3 class="text-white font-bold text-lg drop-shadow-md">Twelfth Night</h3>
-                    </div>
-                </a>
-
-                <!-- Video 3 -->
-                <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="block group relative aspect-video rounded-xl overflow-hidden cursor-pointer shadow-lg hover-lift bg-gradient-to-br from-green-400 via-teal-500 to-blue-500 p-1">
-                    <div class="absolute inset-1 bg-navy-900 rounded-lg opacity-20 group-hover:opacity-0 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center z-10">
-                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300 shadow-lg">
-                            <i class="fa-solid fa-play text-2xl text-white ml-1"></i>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-2 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10">
-                        <h3 class="text-white font-bold text-lg drop-shadow-md">As You Like It</h3>
-                    </div>
-                </a>
-            </div>
-            
-            <div class="mt-10 text-center">
-                <a href="https://www.youtube.com/@EnglishTeacherJi" target="_blank" class="inline-block bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold px-8 py-2 rounded-full shadow-lg transition duration-300 hover:scale-105">
-                    View More on YouTube
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact" class="bg-[#030610] pt-16 pb-8 border-t border-white/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-                <div>
-                    <h3 class="text-yellow-400 font-bold text-lg mb-6">Social Links</h3>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="https://www.facebook.com/englishteacherji/" target="_blank" class="w-10 h-10 rounded-full bg-[#3b5998] flex items-center justify-center text-white hover:scale-110 transition shadow-lg"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="https://www.youtube.com/c/EnglishTeacherJi?sub_confirmation=1" target="_blank" class="w-10 h-10 rounded-full bg-[#ff0000] flex items-center justify-center text-white hover:scale-110 transition shadow-lg"><i class="fa-brands fa-youtube"></i></a>
+                    <h3 class="text-2xl font-serif font-bold text-white mb-6">English Teacher Ji</h3>
+                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">Elevating English literature education with passion, depth, and clarity.</p>
+                    <div class="flex gap-4">
+                        <a href="https://www.facebook.com/englishteacherji/" target="_blank" class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center text-gray-300 hover:text-white hover:bg-[#3b5998] transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.youtube.com/c/EnglishTeacherJi?sub_confirmation=1" target="_blank" class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center text-gray-300 hover:text-white hover:bg-[#ff0000] transition-all"><i class="fa-brands fa-youtube"></i></a>
                     </div>
                 </div>
-                
                 <div>
-                    <h3 class="text-yellow-400 font-bold text-lg mb-6">Sitemap</h3>
+                    <h3 class="text-gold-400 font-bold tracking-wider uppercase text-sm mb-6">Quick Links</h3>
                     <ul class="space-y-3 text-sm text-gray-400">
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-400"></div> BSEB</li>
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-400"></div> Calcutta University</li>
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-400"></div> Exams</li>
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-400"></div> Community</li>
-                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-yellow-400"></div> Contact</li>
-                        <li><button id="admin-open-btn" class="text-purple-400 hover:text-purple-300 transition text-xs mt-4 flex items-center gap-2"><i class="fa-solid fa-lock"></i> Admin Access</button></li>
+                        <li><a href="#courses" class="hover:text-white transition">Premium Courses</a></li>
+                        <li><a href="#exams" class="hover:text-white transition">Study Vault (PDFs)</a></li>
+                        <li><a href="https://www.youtube.com/c/EnglishTeacherJi" target="_blank" class="hover:text-white transition">YouTube Lessons</a></li>
                     </ul>
                 </div>
-                
-                <!-- Third Column placeholder for balance if needed, or you can adjust grid-cols -->
-                <div></div>
-            </div>
-            
-            <div class="border-t border-white/10 pt-8 text-center text-xs text-gray-500">
-                <p>&copy; 2026 English Teacher Ji. All rights reserved.</p>
-                <!-- Admin Access Button -->
-                <div class="mt-4">
-                    <button id="admin-login-btn" class="text-gray-600 hover:text-yellow-400 transition flex items-center justify-center gap-2 mx-auto focus:outline-none">
-                        <i class="fa-solid fa-lock"></i> Admin Access
-                    </button>
+                <div>
+                    <h3 class="text-gold-400 font-bold tracking-wider uppercase text-sm mb-6">Contact Us</h3>
+                    <ul class="space-y-4 text-sm text-gray-400">
+                        <li>
+                            <a href="mailto:englishteacherji2020@gmail.com" class="hover:text-white transition flex items-center group">
+                                <div class="w-8 h-8 rounded bg-white/5 flex items-center justify-center mr-3 group-hover:bg-gold-500/20 transition"><i class="fa-solid fa-envelope text-gold-400"></i></div>
+                                englishteacherji2020@gmail.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://wa.me/918017353511" target="_blank" class="hover:text-white transition flex items-center group">
+                                <div class="w-8 h-8 rounded bg-white/5 flex items-center justify-center mr-3 group-hover:bg-green-500/20 transition"><i class="fa-brands fa-whatsapp text-green-400"></i></div>
+                                +91 8017353511
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+                <p>&copy; 2026 English Teacher Ji. All rights reserved.</p>
+                <p class="mt-4 md:mt-0 font-serif italic">"Literature is the safe and traditional vehicle through which we learn about the world."</p>
             </div>
         </div>
     </footer>
 
+    <!-- Modals (Resource, Password, Alert, Admin) -->
     <!-- Resource Modal for PDF Download -->
-    <div id="resource-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div id="modal-panel" class="bg-navy-800 border border-cyan-500/50 shadow-[0_0_30px_rgba(34,211,238,0.3)] rounded-2xl w-11/12 max-w-2xl max-h-[85vh] flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
-            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-navy-900">
-                <h3 id="modal-title" class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 flex items-center gap-3">
-                    <i id="modal-icon" class="fa-solid fa-file-pdf text-cyan-400 text-xl"></i> 
+    <div id="resource-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/90 backdrop-blur-md transition-opacity duration-300 opacity-0">
+        <div id="modal-panel" class="bg-darker border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] rounded-2xl w-11/12 max-w-2xl max-h-[85vh] flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+                <h3 id="modal-title" class="text-xl font-serif font-bold text-white flex items-center gap-3">
+                    <i id="modal-icon" class="fa-solid fa-file-pdf text-gold-400"></i> 
                     <span id="modal-title-text">Resource Title</span>
                 </h3>
-                <button id="close-modal" class="text-gray-400 hover:text-white transition focus:outline-none">
-                    <i class="fa-solid fa-xmark text-2xl"></i>
+                <button id="close-modal" class="text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 w-8 h-8 rounded-full flex items-center justify-center transition focus:outline-none">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <!-- Ensure modal content expands correctly -->
-            <div class="p-6 overflow-y-auto flex-grow bg-navy-800 text-gray-300 text-base leading-relaxed" id="modal-content">
+            <div class="p-8 overflow-y-auto flex-grow text-gray-300 text-base leading-loose font-light" id="modal-content" style="background-image: radial-gradient(circle at center, rgba(255,255,255,0.02) 0%, transparent 100%);">
                 Loading content...
             </div>
-            <div class="p-6 border-t border-white/10 bg-navy-900 flex justify-end">
-                <button id="download-btn" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.4)] transition duration-300 hover:scale-105 flex items-center gap-3 text-lg">
-                    <i class="fa-solid fa-download"></i> Download PDF
+            <div class="p-6 border-t border-white/5 bg-white/5 flex justify-end">
+                <button id="download-btn" class="bg-white text-black hover:bg-gray-200 font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 flex items-center gap-3">
+                    <i class="fa-solid fa-download"></i> Download PDF Document
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Password Prompt Modal -->
-    <div id="password-modal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div id="password-panel" class="bg-navy-800 border border-yellow-500/50 shadow-[0_0_30px_rgba(250,204,21,0.3)] rounded-2xl w-11/12 max-w-sm p-6 transform scale-95 transition-transform duration-300 text-center">
-            <h3 class="text-xl font-bold text-white mb-4"><i class="fa-solid fa-lock text-yellow-400 mr-2"></i> Admin Login</h3>
-            <input type="password" id="admin-password-input" placeholder="Enter Password" class="w-full bg-navy-900 border border-white/20 rounded-lg px-4 py-3 text-white mb-6 focus:outline-none focus:border-yellow-400">
-            <div class="flex justify-end gap-4">
-                <button id="cancel-password-btn" class="text-gray-400 hover:text-white transition">Cancel</button>
-                <button id="submit-password-btn" class="bg-yellow-500 hover:bg-yellow-400 text-navy-900 font-bold py-2 px-6 rounded-lg transition shadow-lg">Login</button>
+    <div id="password-modal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-black/90 backdrop-blur-md transition-opacity duration-300 opacity-0">
+        <div id="password-panel" class="glass-panel border border-white/10 shadow-2xl rounded-2xl w-11/12 max-w-sm p-8 transform scale-95 transition-transform duration-300 text-center">
+            <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fa-solid fa-lock text-2xl text-gold-400"></i>
+            </div>
+            <h3 class="text-xl font-serif font-bold text-white mb-6">Admin Access</h3>
+            <input type="password" id="admin-password-input" placeholder="Enter Secure Password" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white mb-6 focus:outline-none focus:border-gold-400 text-center tracking-widest">
+            <div class="flex flex-col gap-3">
+                <button id="submit-password-btn" class="w-full bg-gold-400 hover:bg-gold-500 text-black font-bold py-3 rounded-xl transition shadow-lg">Authenticate</button>
+                <button id="cancel-password-btn" class="w-full text-gray-400 hover:text-white py-2 transition text-sm">Cancel</button>
             </div>
         </div>
     </div>
 
     <!-- Custom Alert Modal -->
-    <div id="alert-modal" class="fixed inset-0 z-[120] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div id="alert-panel" class="bg-navy-800 border border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.3)] rounded-2xl w-11/12 max-w-sm p-6 transform scale-95 transition-transform duration-300 text-center">
-            <i class="fa-solid fa-circle-exclamation text-red-500 text-4xl mb-4"></i>
-            <p id="alert-message" class="text-white text-lg mb-6"></p>
-            <button id="close-alert-btn" class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-8 rounded-lg transition shadow-lg">OK</button>
+    <div id="alert-modal" class="fixed inset-0 z-[120] hidden flex items-center justify-center bg-black/90 backdrop-blur-md transition-opacity duration-300 opacity-0">
+        <div id="alert-panel" class="glass-panel border border-white/10 rounded-2xl w-11/12 max-w-sm p-8 transform scale-95 transition-transform duration-300 text-center">
+            <i class="fa-solid fa-circle-exclamation text-red-400 text-5xl mb-4"></i>
+            <p id="alert-message" class="text-white text-lg mb-8 font-light"></p>
+            <button id="close-alert-btn" class="bg-white hover:bg-gray-200 text-black font-bold py-2 px-8 rounded-full transition w-full">Understood</button>
         </div>
     </div>
 
     <!-- Admin Dashboard Modal -->
-    <div id="admin-modal" class="fixed inset-0 z-[105] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div id="admin-panel" class="bg-navy-800 border border-purple-500/50 shadow-[0_0_30px_rgba(168,85,247,0.3)] rounded-2xl w-11/12 max-w-3xl max-h-[90vh] flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
-            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-navy-900">
-                <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 flex items-center gap-3">
-                    <i class="fa-solid fa-user-shield text-purple-400 text-xl"></i> 
-                    Admin Dashboard
+    <div id="admin-modal" class="fixed inset-0 z-[105] hidden flex items-center justify-center bg-black/90 backdrop-blur-md transition-opacity duration-300 opacity-0">
+        <div id="admin-panel" class="bg-darker border border-white/10 shadow-2xl rounded-2xl w-11/12 max-w-4xl max-h-[90vh] flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+                <h3 class="text-xl font-serif font-bold text-white flex items-center gap-3">
+                    <i class="fa-solid fa-sliders text-gold-400"></i> Command Center
                 </h3>
-                <button id="close-admin-btn" class="text-gray-400 hover:text-white transition focus:outline-none">
-                    <i class="fa-solid fa-xmark text-2xl"></i>
+                <button id="close-admin-btn" class="text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 w-8 h-8 rounded-full flex items-center justify-center transition focus:outline-none">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <div class="p-6 overflow-y-auto flex-grow flex flex-col gap-4">
-                <p class="text-gray-300 text-sm mb-2">Select a category and topic to edit its content.</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-cyan-400 font-medium mb-2 text-sm">Category</label>
-                        <select id="admin-category-select" class="w-full bg-navy-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-400">
-                            <option value="">Select Category...</option>
-                        </select>
+            
+            <div class="p-8 overflow-y-auto flex-grow flex flex-col gap-6">
+                <!-- Section Selector -->
+                <div class="bg-white/5 p-1 rounded-xl flex">
+                    <button id="tab-resources" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-white/10 text-white transition">Study Vault PDFs</button>
+                    <button id="tab-courses" class="flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition">Premium Courses</button>
+                </div>
+                <input type="hidden" id="admin-section-select" value="resources">
+
+                <!-- Form For Resources (Full CRUD) -->
+                <div id="admin-resources-form" class="space-y-6">
+                    
+                    <!-- Category Management -->
+                    <div class="bg-white/5 p-5 rounded-xl border border-white/5 space-y-4 relative">
+                        <h4 class="text-gold-400 font-serif font-bold text-lg border-b border-white/10 pb-2">Manage Category</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">Select Category</label>
+                                <select id="admin-category-select" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-400">
+                                    <option value="">Choose Category...</option>
+                                    <option value="new" class="text-gold-400 font-bold">+ Create New Category</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">Category Title</label>
+                                <input type="text" id="admin-category-title" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-400" disabled>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button id="admin-delete-category-btn" class="hidden text-red-400 hover:text-red-300 hover:bg-red-400/10 text-sm font-semibold py-2 px-4 rounded-lg transition duration-300">
+                                <i class="fa-solid fa-trash mr-1"></i> Delete Entire Category
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-cyan-400 font-medium mb-2 text-sm">Topic</label>
-                        <select id="admin-topic-select" class="w-full bg-navy-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-purple-400" disabled>
-                            <option value="">Select Topic...</option>
-                        </select>
+
+                    <!-- Topic Management -->
+                    <div id="admin-topic-section" class="bg-white/5 p-5 rounded-xl border border-white/5 space-y-4 relative transition-opacity duration-300 opacity-50 pointer-events-none">
+                        <h4 class="text-gold-400 font-serif font-bold text-lg border-b border-white/10 pb-2">Manage Topic / Document</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">Select Topic</label>
+                                <select id="admin-topic-select" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-400" disabled>
+                                    <option value="">Choose Topic...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">Topic Title</label>
+                                <input type="text" id="admin-topic-title" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-400" disabled>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">Document Content (Text for PDF)</label>
+                            <textarea id="admin-content-textarea" class="w-full min-h-[200px] bg-black/50 border border-white/10 rounded-xl px-5 py-4 text-gray-300 focus:outline-none focus:border-gold-400 font-mono text-sm leading-relaxed" disabled></textarea>
+                        </div>
+                        <div class="flex justify-end">
+                            <button id="admin-delete-topic-btn" class="hidden text-red-400 hover:text-red-300 hover:bg-red-400/10 text-sm font-semibold py-2 px-4 rounded-lg transition duration-300">
+                                <i class="fa-solid fa-trash mr-1"></i> Delete Topic
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="mt-4 flex-grow flex flex-col">
-                    <label class="block text-cyan-400 font-medium mb-2 text-sm">Content for PDF</label>
-                    <textarea id="admin-content-textarea" class="w-full flex-grow min-h-[200px] bg-navy-900 border border-white/20 rounded-lg px-4 py-3 text-gray-300 focus:outline-none focus:border-purple-400 font-mono text-sm" disabled></textarea>
+
+                <!-- Form For Courses -->
+                <div id="admin-courses-form" class="hidden space-y-5">
+                    <div>
+                        <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">Manage Course</label>
+                        <select id="admin-course-select" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-400">
+                            <option value="">Choose Course to Edit...</option>
+                            <option value="new" class="text-gold-400 font-bold">+ Create New Course</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">Course Title</label>
+                            <input type="text" id="admin-course-title" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-400" disabled>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">Price (e.g. ₹999)</label>
+                            <input type="text" id="admin-course-price" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-400" disabled>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">Duration (e.g. 3 Months)</label>
+                            <input type="text" id="admin-course-duration" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-400" disabled>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">WhatsApp Contact No.</label>
+                            <input type="text" id="admin-course-whatsapp" placeholder="918017353511" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-400" disabled>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-xs uppercase tracking-wider mb-2">Short Description</label>
+                        <textarea id="admin-course-desc" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold-400 min-h-[100px]" disabled></textarea>
+                    </div>
+                    <div class="flex justify-start">
+                        <button id="admin-delete-course-btn" class="hidden text-red-400 hover:text-red-300 hover:bg-red-400/10 text-sm font-semibold py-2 px-4 rounded-lg transition duration-300">
+                            <i class="fa-solid fa-trash mr-1"></i> Delete Course
+                        </button>
+                    </div>
                 </div>
+
             </div>
-            <div class="p-6 border-t border-white/10 bg-navy-900 flex justify-end gap-4">
-                <span id="admin-save-status" class="text-green-400 flex items-center hidden"><i class="fa-solid fa-check mr-2"></i> Saved!</span>
-                <button id="admin-save-btn" class="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 text-white font-bold py-2 px-8 rounded-lg shadow-lg transition duration-300 hover:scale-105" disabled>
-                    Save Changes
-                </button>
+            <div class="p-6 border-t border-white/5 bg-white/5 flex justify-end items-center">
+                <div class="flex gap-4 items-center">
+                    <span id="admin-save-status" class="text-green-400 flex items-center hidden text-sm font-medium"><i class="fa-solid fa-check mr-2"></i> Saved</span>
+                    <button id="admin-save-btn" class="bg-white text-black hover:bg-gray-200 font-bold py-3 px-8 rounded-full shadow-lg transition duration-300" disabled>
+                        Save Changes
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Main JavaScript Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, getDocs, addDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, getDocs, addDoc, onSnapshot, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // DOM Elements
+        // Global Elements
         const container = document.getElementById('exam-resources-container');
+        const coursesContainer = document.getElementById('courses-container');
         const modal = document.getElementById('resource-modal');
         const modalPanel = document.getElementById('modal-panel');
         const closeModalBtn = document.getElementById('close-modal');
@@ -390,200 +484,225 @@
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         
-        // Admin DOM Elements
+        // Admin Auth Elements
         const adminLoginBtn = document.getElementById('admin-login-btn');
+        const adminOpenBtn = document.getElementById('admin-open-btn'); 
         const passwordModal = document.getElementById('password-modal');
         const passwordPanel = document.getElementById('password-panel');
         const adminPasswordInput = document.getElementById('admin-password-input');
         const submitPasswordBtn = document.getElementById('submit-password-btn');
         const cancelPasswordBtn = document.getElementById('cancel-password-btn');
         
+        // Alert Elements
         const alertModal = document.getElementById('alert-modal');
         const alertPanel = document.getElementById('alert-panel');
         const alertMessage = document.getElementById('alert-message');
         const closeAlertBtn = document.getElementById('close-alert-btn');
         
+        // Admin Panel Elements
         const adminModal = document.getElementById('admin-modal');
         const adminPanel = document.getElementById('admin-panel');
         const closeAdminBtn = document.getElementById('close-admin-btn');
-        const adminCategorySelect = document.getElementById('admin-category-select');
-        const adminTopicSelect = document.getElementById('admin-topic-select');
-        const adminContentTextarea = document.getElementById('admin-content-textarea');
+        const adminSectionSelect = document.getElementById('admin-section-select');
+        const tabResources = document.getElementById('tab-resources');
+        const tabCourses = document.getElementById('tab-courses');
         const adminSaveBtn = document.getElementById('admin-save-btn');
         const adminSaveStatus = document.getElementById('admin-save-status');
         
-        let currentUser = null;
+        // Resources Form Elements (Upgraded)
+        const adminCategorySelect = document.getElementById('admin-category-select');
+        const adminCategoryTitle = document.getElementById('admin-category-title');
+        const adminDeleteCategoryBtn = document.getElementById('admin-delete-category-btn');
+        
+        const adminTopicSection = document.getElementById('admin-topic-section');
+        const adminTopicSelect = document.getElementById('admin-topic-select');
+        const adminTopicTitle = document.getElementById('admin-topic-title');
+        const adminContentTextarea = document.getElementById('admin-content-textarea');
+        const adminDeleteTopicBtn = document.getElementById('admin-delete-topic-btn');
+        
+        // Courses Form Elements
+        const adminCourseSelect = document.getElementById('admin-course-select');
+        const adminCourseTitle = document.getElementById('admin-course-title');
+        const adminCoursePrice = document.getElementById('admin-course-price');
+        const adminCourseDuration = document.getElementById('admin-course-duration');
+        const adminCourseDesc = document.getElementById('admin-course-desc');
+        const adminCourseWhatsapp = document.getElementById('admin-course-whatsapp');
+        const adminDeleteCourseBtn = document.getElementById('admin-delete-course-btn');
+
+        let dbInstance = null; 
         let currentDownloadContent = "";
         let currentDownloadTitle = "";
-        let dbInstance = null; // Store db reference globally for admin edits
-        let globalResourcesData = []; // Store fetched data for admin panel
+        let globalResourcesData = []; 
+        let globalCoursesData = [];
 
-        // Default Exam Resources Data
+        // --- Defaults ---
+        const defaultCourses = [
+            { id: "c1", title: "BSEB Class 12 Masterclass", desc: "Complete syllabus coverage, objective Q&As, and live doubt sessions.", price: "₹999", duration: "3 Months", whatsapp: "918017353511", order: 1 },
+            { id: "c2", title: "WBSLST Core English", desc: "Intensive training on British literature, poetry, and essay writing patterns.", price: "₹1,499", duration: "6 Months", whatsapp: "918017353511", order: 2 },
+            { id: "c3", title: "Spoken English Pro", desc: "Boost your communication skills, fluency, and public speaking confidence.", price: "₹499", duration: "2 Months", whatsapp: "918017353511", order: 3 }
+        ];
+
         const defaultExamResources = [
             {
-                title: "BSEB Class 12",
-                order: 1,
-                themeClass: "from-purple-500 to-purple-800",
-                borderClass: "border-purple-400/30",
+                id: "cat_bseb", title: "BSEB Class 12", order: 1, themeClass: "border-purple-500/20",
                 links: [
-                    { name: "Syllabus Overview", icon: "fa-graduation-cap", content: "BSEB Class 12 English Syllabus 2026.\n\nSection A: Prose\n1. Indian Civilization and Culture\n2. Bharat is My Home\n...\n\nSection B: Poetry\n1. Sweetest Love I Do Not Goe\n2. Song of Myself" },
-                    { name: "Objective Q&A", icon: "fa-book-open-reader", content: "Important Objective Questions for Board Exams.\n\nQ1: Who wrote 'Macbeth'?\nA: William Shakespeare.\n\nQ2: What is the main theme of 'Bharat is My Home'?\nA: Nation building and dedication." },
-                    { name: "Model Papers", icon: "fa-regular fa-file-lines", content: "Model Paper Set 1 (2026)\n\nTime: 3 Hours | Max Marks: 100\n\nInstructions: All questions are compulsory. Objective type questions carry 1 mark each." }
+                    { name: "Syllabus Overview", icon: "fa-graduation-cap", content: "BSEB Class 12 English Syllabus 2026.\n\nSection A: Prose..." },
+                    { name: "Objective Q&A", icon: "fa-book-open-reader", content: "Important Objective Questions for Board Exams.\n\nQ1: Who wrote 'Macbeth'?" }
                 ]
             },
             {
-                title: "WBSLST",
-                order: 2,
-                themeClass: "from-teal-400 to-cyan-600",
-                borderClass: "border-teal-300/30",
+                id: "cat_wbslst", title: "WBSLST Core", order: 2, themeClass: "border-gold-500/20",
                 links: [
-                    { name: "Core Syllabus", icon: "fa-chalkboard-user", content: "WBSLST Core English Syllabus breakdown encompassing British Literature, Indian Writing in English, and literary theory." },
-                    { name: "Mock Tests", icon: "fa-file-pen", content: "Full length Mock Test series designed specifically for the WBSLST pattern." },
-                    { name: "Topic Notes", icon: "fa-layer-group", content: "Detailed notes on Romanticism, Victorian Era, and Modernism for WBSLST aspirants." }
-                ]
-            },
-            {
-                title: "Calcutta Univ (CU)",
-                order: 3,
-                themeClass: "from-blue-500 to-indigo-700",
-                borderClass: "border-blue-400/30",
-                links: [
-                    { name: "BA/MA Notes", icon: "fa-building-columns", content: "Comprehensive lecture notes for Calcutta University BA English Honours and MA Literature students." },
-                    { name: "Semester Guide", icon: "fa-book-bookmark", content: "Semester-wise breakdown of texts, reference books, and marking schemes." },
-                    { name: "Important Qs", icon: "fa-pen-nib", content: "Previous year question analysis and most expected questions for the upcoming CU semester exams." }
-                ]
-            },
-            {
-                title: "B.Ed Notes",
-                order: 4,
-                themeClass: "from-orange-400 to-yellow-600",
-                borderClass: "border-orange-300/30",
-                links: [
-                    { name: "Methodology", icon: "fa-book", content: "Pedagogy of English language teaching, ESL methods, and classroom management techniques." },
-                    { name: "Lesson Plans", icon: "fa-list-check", content: "Ready-to-use lesson plan templates for prose, poetry, and grammar classes." },
-                    { name: "Practicum Guide", icon: "fa-clipboard-question", content: "Guidelines for completing B.Ed practicum files and final teaching observations." }
+                    { name: "Syllabus Structure", icon: "fa-chalkboard-user", content: "WBSLST Core English Syllabus breakdown..." },
+                    { name: "Mock Tests", icon: "fa-file-pen", content: "Full length Mock Test series..." }
                 ]
             }
         ];
 
-        // Mobile Menu Logic
+        // UI Interactions
         mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-        });
-
-        const adminOpenBtn = document.getElementById('admin-open-btn');
+        mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
 
         function showCustomAlert(message) {
             alertMessage.textContent = message;
             alertModal.classList.remove('hidden');
-            setTimeout(() => {
-                alertModal.classList.remove('opacity-0');
-                alertPanel.classList.remove('scale-95');
-            }, 10);
+            setTimeout(() => { alertModal.classList.remove('opacity-0'); alertPanel.classList.remove('scale-95'); }, 10);
         }
 
         closeAlertBtn.addEventListener('click', () => {
-            alertModal.classList.add('opacity-0');
-            alertPanel.classList.add('scale-95');
-            setTimeout(() => {
-                alertModal.classList.add('hidden');
-            }, 300);
+            alertModal.classList.add('opacity-0'); alertPanel.classList.add('scale-95');
+            setTimeout(() => alertModal.classList.add('hidden'), 300);
         });
 
-        // Admin Password Login Logic
+        // Admin Login
         const showPasswordPrompt = (e) => {
             if(e) e.preventDefault();
+            mobileMenu.classList.add('hidden');
             adminPasswordInput.value = '';
             passwordModal.classList.remove('hidden');
-            setTimeout(() => {
-                passwordModal.classList.remove('opacity-0');
-                passwordPanel.classList.remove('scale-95');
-                adminPasswordInput.focus();
-            }, 10);
+            setTimeout(() => { passwordModal.classList.remove('opacity-0'); passwordPanel.classList.remove('scale-95'); adminPasswordInput.focus(); }, 10);
         };
 
-        adminLoginBtn.addEventListener('click', showPasswordPrompt);
-        if (adminOpenBtn) adminOpenBtn.addEventListener('click', showPasswordPrompt);
+        if(adminLoginBtn) adminLoginBtn.addEventListener('click', showPasswordPrompt);
+        if(adminOpenBtn) adminOpenBtn.addEventListener('click', showPasswordPrompt);
 
         function closePasswordModal() {
-            passwordModal.classList.add('opacity-0');
-            passwordPanel.classList.add('scale-95');
-            setTimeout(() => {
-                passwordModal.classList.add('hidden');
-            }, 300);
+            passwordModal.classList.add('opacity-0'); passwordPanel.classList.add('scale-95');
+            setTimeout(() => passwordModal.classList.add('hidden'), 300);
         }
 
         cancelPasswordBtn.addEventListener('click', closePasswordModal);
-
         submitPasswordBtn.addEventListener('click', () => {
             if (adminPasswordInput.value === 'admin125995') {
                 closePasswordModal();
                 openAdminDashboard();
             } else {
-                showCustomAlert('Incorrect password. Access denied.');
+                showCustomAlert('Incorrect credentials. Access denied.');
             }
         });
-        
-        adminPasswordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') submitPasswordBtn.click();
-        });
+        adminPasswordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') submitPasswordBtn.click(); });
 
-        // Admin Dashboard Logic
+        // Custom Tabs Logic in Admin
+        function switchTab(section) {
+            adminSectionSelect.value = section;
+            adminSaveBtn.disabled = true;
+
+            if (section === 'resources') {
+                tabResources.className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-white/10 text-white transition";
+                tabCourses.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition";
+                document.getElementById('admin-resources-form').classList.remove('hidden');
+                document.getElementById('admin-courses-form').classList.add('hidden');
+                
+                adminCategorySelect.value = ""; 
+                adminCategoryTitle.value = ""; adminCategoryTitle.disabled = true;
+                adminDeleteCategoryBtn.classList.add('hidden');
+                
+                // Disable topic section visually and functionally
+                adminTopicSection.classList.add('opacity-50', 'pointer-events-none');
+                adminTopicSelect.value = ""; adminTopicTitle.value = ""; adminContentTextarea.value = "";
+                
+            } else {
+                tabCourses.className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-white/10 text-white transition";
+                tabResources.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white transition";
+                document.getElementById('admin-resources-form').classList.add('hidden');
+                document.getElementById('admin-courses-form').classList.remove('hidden');
+                adminCourseSelect.value = ""; disableCourseInputs();
+            }
+        }
+
+        tabResources.addEventListener('click', () => switchTab('resources'));
+        tabCourses.addEventListener('click', () => switchTab('courses'));
+
         function openAdminDashboard() {
+            switchTab('resources');
             populateAdminCategories();
+            populateAdminCourses();
             adminModal.classList.remove('hidden');
-            setTimeout(() => {
-                adminModal.classList.remove('opacity-0');
-                adminPanel.classList.remove('scale-95');
-            }, 10);
+            setTimeout(() => { adminModal.classList.remove('opacity-0'); adminPanel.classList.remove('scale-95'); }, 10);
         }
 
         closeAdminBtn.addEventListener('click', () => {
-            adminModal.classList.add('opacity-0');
-            adminPanel.classList.add('scale-95');
-            setTimeout(() => {
-                adminModal.classList.add('hidden');
-            }, 300);
+            adminModal.classList.add('opacity-0'); adminPanel.classList.add('scale-95');
+            setTimeout(() => adminModal.classList.add('hidden'), 300);
         });
 
+        // ----------------------------------------------------
+        // RESOURCES FULL CRUD LOGIC
+        // ----------------------------------------------------
+        
         function populateAdminCategories() {
-            adminCategorySelect.innerHTML = '<option value="">Select Category...</option>';
+            adminCategorySelect.innerHTML = '<option value="">Choose Category...</option><option value="new" class="text-gold-400 font-bold">+ Create New Category</option>';
             globalResourcesData.forEach(cat => {
-                const option = document.createElement('option');
-                // Use ID if available, otherwise fallback to title
-                option.value = cat.id || cat.title; 
-                option.textContent = cat.title;
-                adminCategorySelect.appendChild(option);
+                const opt = document.createElement('option');
+                opt.value = cat.id || cat.title; opt.textContent = cat.title;
+                adminCategorySelect.appendChild(opt);
             });
-            adminTopicSelect.innerHTML = '<option value="">Select Topic...</option>';
-            adminTopicSelect.disabled = true;
-            adminContentTextarea.value = '';
-            adminContentTextarea.disabled = true;
-            adminSaveBtn.disabled = true;
+            adminTopicSection.classList.add('opacity-50', 'pointer-events-none');
+        }
+
+        function populateAdminTopics(cat) {
+            adminTopicSelect.innerHTML = '<option value="">Choose Topic...</option><option value="new" class="text-gold-400 font-bold">+ Create New Topic</option>';
+            if(cat && cat.links) {
+                cat.links.forEach((link, idx) => {
+                    const opt = document.createElement('option'); opt.value = idx; opt.textContent = link.name;
+                    adminTopicSelect.appendChild(opt);
+                });
+            }
         }
 
         adminCategorySelect.addEventListener('change', (e) => {
             const catId = e.target.value;
-            adminTopicSelect.innerHTML = '<option value="">Select Topic...</option>';
-            adminContentTextarea.value = '';
-            adminContentTextarea.disabled = true;
-            adminSaveBtn.disabled = true;
+            
+            // Reset topic section
+            adminTopicSelect.innerHTML = '<option value="">Choose Topic...</option>';
+            adminTopicSelect.disabled = true; adminTopicTitle.value = ''; adminTopicTitle.disabled = true;
+            adminContentTextarea.value = ''; adminContentTextarea.disabled = true; 
+            adminDeleteTopicBtn.classList.add('hidden');
 
-            if (catId) {
-                // Match by either id or title
-                const category = globalResourcesData.find(c => (c.id || c.title) === catId);
-                if (category && category.links) {
-                    category.links.forEach((link, index) => {
-                        const option = document.createElement('option');
-                        option.value = index;
-                        option.textContent = link.name;
-                        adminTopicSelect.appendChild(option);
-                    });
+            if (catId === 'new') {
+                adminCategoryTitle.value = ''; adminCategoryTitle.disabled = false;
+                adminDeleteCategoryBtn.classList.add('hidden');
+                adminTopicSection.classList.add('opacity-50', 'pointer-events-none');
+                adminSaveBtn.innerHTML = 'Create Category'; adminSaveBtn.disabled = false;
+            } 
+            else if (catId) {
+                const cat = globalResourcesData.find(c => (c.id || c.title) === catId);
+                if (cat) {
+                    adminCategoryTitle.value = cat.title; adminCategoryTitle.disabled = false;
+                    adminDeleteCategoryBtn.classList.remove('hidden');
+                    
+                    // Enable topic section
+                    adminTopicSection.classList.remove('opacity-50', 'pointer-events-none');
                     adminTopicSelect.disabled = false;
+                    populateAdminTopics(cat);
+                    
+                    adminSaveBtn.innerHTML = 'Save Changes'; adminSaveBtn.disabled = false;
                 }
-            } else {
-                adminTopicSelect.disabled = true;
+            } else { 
+                adminCategoryTitle.value = ''; adminCategoryTitle.disabled = true;
+                adminDeleteCategoryBtn.classList.add('hidden');
+                adminTopicSection.classList.add('opacity-50', 'pointer-events-none');
+                adminSaveBtn.disabled = true; 
             }
         });
 
@@ -591,263 +710,327 @@
             const catId = adminCategorySelect.value;
             const topicIndex = e.target.value;
             
-            if (catId && topicIndex !== "") {
-                const category = globalResourcesData.find(c => (c.id || c.title) === catId);
-                if (category && category.links[topicIndex]) {
-                    adminContentTextarea.value = category.links[topicIndex].content;
-                    adminContentTextarea.disabled = false;
-                    adminSaveBtn.disabled = false;
+            if (topicIndex === 'new') {
+                adminTopicTitle.value = ''; adminTopicTitle.disabled = false;
+                adminContentTextarea.value = ''; adminContentTextarea.disabled = false;
+                adminDeleteTopicBtn.classList.add('hidden');
+                adminSaveBtn.innerHTML = 'Create Topic'; adminSaveBtn.disabled = false;
+            }
+            else if (catId && topicIndex !== "") {
+                const cat = globalResourcesData.find(c => (c.id || c.title) === catId);
+                if (cat && cat.links[topicIndex]) {
+                    adminTopicTitle.value = cat.links[topicIndex].name; adminTopicTitle.disabled = false;
+                    adminContentTextarea.value = cat.links[topicIndex].content; adminContentTextarea.disabled = false;
+                    adminDeleteTopicBtn.classList.remove('hidden');
+                    adminSaveBtn.innerHTML = 'Save Changes'; adminSaveBtn.disabled = false;
+                }
+            } else { 
+                adminTopicTitle.value = ''; adminTopicTitle.disabled = true;
+                adminContentTextarea.value = ''; adminContentTextarea.disabled = true; 
+                adminDeleteTopicBtn.classList.add('hidden');
+                adminSaveBtn.innerHTML = 'Save Changes'; // Revert back to category save mode
+            }
+        });
+
+        // Delete Category Logic
+        adminDeleteCategoryBtn.addEventListener('click', async () => {
+            const catId = adminCategorySelect.value;
+            if (!catId || catId === 'new') return;
+            if (confirm("Are you sure you want to permanently delete this Category and ALL its topics?")) {
+                adminDeleteCategoryBtn.innerHTML = 'Deleting...'; adminDeleteCategoryBtn.disabled = true;
+                try {
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'english-teacher-ji';
+                    const cat = globalResourcesData.find(c => (c.id || c.title) === catId);
+                    if (dbInstance && cat.id && !cat.id.startsWith('temp_')) {
+                        await deleteDoc(doc(dbInstance, 'artifacts', appId, 'public', 'data', 'examResources', cat.id));
+                    }
+                    globalResourcesData = globalResourcesData.filter(c => (c.id || c.title) !== catId);
+                    renderResources(globalResourcesData); 
+                    populateAdminCategories(); 
+                    switchTab('resources'); // Reset UI
+                    showCustomAlert("Category deleted successfully.");
+                } catch(e) { console.error(e); }
+                adminDeleteCategoryBtn.innerHTML = '<i class="fa-solid fa-trash mr-1"></i> Delete Entire Category'; adminDeleteCategoryBtn.disabled = false;
+            }
+        });
+
+        // Delete Topic Logic
+        adminDeleteTopicBtn.addEventListener('click', async () => {
+            const catId = adminCategorySelect.value;
+            const topicIdx = adminTopicSelect.value;
+            if (!catId || !topicIdx || topicIdx === 'new') return;
+            if (confirm("Are you sure you want to delete this topic?")) {
+                adminDeleteTopicBtn.innerHTML = 'Deleting...'; adminDeleteTopicBtn.disabled = true;
+                try {
+                    const cat = globalResourcesData.find(c => (c.id || c.title) === catId);
+                    cat.links.splice(topicIdx, 1); // Remove from array
+                    
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'english-teacher-ji';
+                    if (dbInstance && cat.id && !cat.id.startsWith('temp_')) {
+                        await updateDoc(doc(dbInstance, 'artifacts', appId, 'public', 'data', 'examResources', cat.id), { links: cat.links });
+                    }
+                    renderResources(globalResourcesData); 
+                    
+                    // Refresh current category view
+                    adminCategorySelect.dispatchEvent(new Event('change'));
+                    showCustomAlert("Topic deleted successfully.");
+                } catch(e) { console.error(e); }
+                adminDeleteTopicBtn.innerHTML = '<i class="fa-solid fa-trash mr-1"></i> Delete Topic'; adminDeleteTopicBtn.disabled = false;
+            }
+        });
+
+
+        // ----------------------------------------------------
+        // COURSES FORM LOGIC
+        // ----------------------------------------------------
+        function populateAdminCourses() {
+            adminCourseSelect.innerHTML = '<option value="">Choose Course to Edit...</option><option value="new" class="text-gold-400 font-bold">+ Create New Course</option>';
+            globalCoursesData.sort((a,b) => (a.order||0) - (b.order||0)).forEach(c => {
+                const opt = document.createElement('option'); opt.value = c.id; opt.textContent = c.title;
+                adminCourseSelect.appendChild(opt);
+            });
+        }
+
+        function disableCourseInputs() {
+            [adminCourseTitle, adminCoursePrice, adminCourseDuration, adminCourseDesc, adminCourseWhatsapp].forEach(el => { el.disabled = true; el.value = ''; });
+            adminDeleteCourseBtn.classList.add('hidden');
+        }
+
+        adminCourseSelect.addEventListener('change', (e) => {
+            const id = e.target.value;
+            if (id === 'new') {
+                [adminCourseTitle, adminCoursePrice, adminCourseDuration, adminCourseDesc, adminCourseWhatsapp].forEach(el => { el.value = ''; el.disabled = false; });
+                adminDeleteCourseBtn.classList.add('hidden');
+                adminSaveBtn.innerHTML = "Create Course"; adminSaveBtn.disabled = false;
+            } else if (id) {
+                const c = globalCoursesData.find(x => x.id === id);
+                if (c) {
+                    adminCourseTitle.value = c.title; adminCoursePrice.value = c.price;
+                    adminCourseDuration.value = c.duration; adminCourseDesc.value = c.desc;
+                    adminCourseWhatsapp.value = c.whatsapp || "";
+                    [adminCourseTitle, adminCoursePrice, adminCourseDuration, adminCourseDesc, adminCourseWhatsapp].forEach(el => el.disabled = false);
+                    adminDeleteCourseBtn.classList.remove('hidden');
+                    adminSaveBtn.innerHTML = "Save Changes"; adminSaveBtn.disabled = false;
                 }
             } else {
-                adminContentTextarea.value = '';
-                adminContentTextarea.disabled = true;
-                adminSaveBtn.disabled = true;
+                disableCourseInputs(); adminSaveBtn.disabled = true;
             }
         });
 
-        adminSaveBtn.addEventListener('click', async () => {
-            const catId = adminCategorySelect.value;
-            const topicIndex = adminTopicSelect.value;
-            const newContent = adminContentTextarea.value;
-            
-            if (catId && topicIndex !== "") {
+        adminDeleteCourseBtn.addEventListener('click', async () => {
+            const id = adminCourseSelect.value;
+            if (!id || id === 'new') return;
+            if (confirm("Permanently delete this course?")) {
+                adminDeleteCourseBtn.innerHTML = 'Deleting...'; adminDeleteCourseBtn.disabled = true;
                 try {
-                    const category = globalResourcesData.find(c => (c.id || c.title) === catId);
-                    
-                    // Clone the links array to update safely
-                    const updatedLinks = [...category.links];
-                    updatedLinks[topicIndex].content = newContent;
-                    
-                    adminSaveBtn.disabled = true;
-                    adminSaveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
-                    
-                    // 1. Instantly update local memory so the UI and PDFs reflect the change immediately
-                    category.links = updatedLinks;
-                    renderResources(globalResourcesData);
-                    
-                    // 2. Attempt to save to Firebase if it's connected
-                    if (dbInstance && category.id) {
-                        const appId = typeof __app_id !== 'undefined' ? __app_id : 'english-teacher-ji';
-                        const docRef = doc(dbInstance, 'artifacts', appId, 'public', 'data', 'examResources', category.id);
-                        await updateDoc(docRef, { links: updatedLinks });
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'english-teacher-ji';
+                    if (dbInstance && !id.startsWith('temp_')) {
+                        await deleteDoc(doc(dbInstance, 'artifacts', appId, 'public', 'data', 'courses', id));
                     }
-                    
-                    adminSaveBtn.innerHTML = 'Save Changes';
-                    adminSaveBtn.disabled = false;
-                    
-                    adminSaveStatus.classList.remove('hidden');
-                    setTimeout(() => {
-                        adminSaveStatus.classList.add('hidden');
-                    }, 3000);
-                    
-                } catch (err) {
-                    console.error("Save error:", err);
-                    showCustomAlert("Cloud save failed, but your changes are saved temporarily for this session.");
-                    adminSaveBtn.innerHTML = 'Save Changes';
-                    adminSaveBtn.disabled = false;
-                }
+                    globalCoursesData = globalCoursesData.filter(x => x.id !== id);
+                    renderCourses(globalCoursesData); populateAdminCourses(); disableCourseInputs(); adminSaveBtn.disabled = true;
+                } catch(e) { console.error(e); }
+                adminDeleteCourseBtn.innerHTML = '<i class="fa-solid fa-trash mr-1"></i> Delete Course'; adminDeleteCourseBtn.disabled = false; adminDeleteCourseBtn.classList.add('hidden');
             }
         });
 
-        // Modal Logic
-        function openModal(title, iconClass, content) {
-            modalTitleText.innerText = title;
-            modalIcon.className = `fa-solid ${iconClass} text-cyan-400 text-xl`;
-            modalContent.innerHTML = `<p class="whitespace-pre-wrap">${content}</p>`;
-            currentDownloadContent = content;
-            currentDownloadTitle = title;
-            
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modalPanel.classList.remove('scale-95');
-            }, 10);
-        }
-
-        function closeModal() {
-            modal.classList.add('opacity-0');
-            modalPanel.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
-
-        closeModalBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        // jsPDF Download Logic with Watermark
-        downloadBtn.addEventListener('click', () => {
-            if (!currentDownloadContent) return;
-            
-            try {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                
-                // 1. ADD WATERMARK FIRST
-                doc.setTextColor(220, 220, 220); // Light gray
-                doc.setFontSize(50);
-                // Center watermark diagonally
-                doc.text("English Teacher Ji", doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() / 2, { angle: 45, align: "center" });
-                
-                // Reset styling for the main content
-                doc.setTextColor(0, 0, 0); // Reset to black
-                doc.setFontSize(12); // Reset to normal size
-                
-                // 2. ADD MAIN CONTENT
-                // Title
-                doc.setTextColor(6, 11, 25); // Dark Navy
-                doc.setFontSize(18);
-                doc.setFont("helvetica", "bold");
-                doc.text(currentDownloadTitle, 20, 20);
-                
-                // Cyan accent line below title
-                doc.setDrawColor(34, 211, 238);
-                doc.setLineWidth(0.8);
-                doc.line(20, 25, 190, 25);
-                
-                // Body text
-                doc.setTextColor(40, 40, 40); // Dark grey
-                doc.setFontSize(12);
-                doc.setFont("helvetica", "normal");
-                
-                // Word wrap text to fit A4 width margins
-                const splitText = doc.splitTextToSize(currentDownloadContent, 170);
-                doc.text(splitText, 20, 35);
-                
-                // Save file
-                const filename = currentDownloadTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + "_study_material.pdf";
-                doc.save(filename);
-
-                // Visual Feedback on Button
-                const originalText = downloadBtn.innerHTML;
-                downloadBtn.innerHTML = `<i class="fa-solid fa-check"></i> Downloaded PDF!`;
-                downloadBtn.classList.add('from-green-500', 'to-emerald-600');
-                setTimeout(() => {
-                    downloadBtn.innerHTML = originalText;
-                    downloadBtn.classList.remove('from-green-500', 'to-emerald-600');
-                }, 3000);
-            } catch (err) {
-                console.error("PDF generation failed:", err);
-                showCustomAlert("Failed to generate PDF. Make sure jsPDF is loaded correctly.");
-            }
-        });
-
-        // Initialize Firebase
-        async function initApp() {
+        // ----------------------------------------------------
+        // GLOBAL SAVE HANDLER
+        // ----------------------------------------------------
+        adminSaveBtn.addEventListener('click', async () => {
+            const section = adminSectionSelect.value;
+            adminSaveBtn.disabled = true; adminSaveBtn.innerHTML = 'Saving...';
             try {
                 const appId = typeof __app_id !== 'undefined' ? __app_id : 'english-teacher-ji';
-                const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
                 
-                if (Object.keys(firebaseConfig).length > 0) {
-                    const app = initializeApp(firebaseConfig);
-                    const db = getFirestore(app);
-                    dbInstance = db; // Store database for admin saves
-                    const auth = getAuth(app);
+                if (section === 'resources') {
+                    const catId = adminCategorySelect.value; 
+                    const topicIdx = adminTopicSelect.value;
                     
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
+                    if (catId === 'new') {
+                        // CREATE NEW CATEGORY
+                        const newCat = {
+                            title: adminCategoryTitle.value || "New Subject",
+                            order: globalResourcesData.length + 1,
+                            themeClass: "border-white/10", // Default border
+                            links: []
+                        };
+                        if (dbInstance) {
+                            const ref = await addDoc(collection(dbInstance, 'artifacts', appId, 'public', 'data', 'examResources'), newCat); 
+                            newCat.id = ref.id;
+                        } else { newCat.id = 'temp_cat_' + Date.now(); }
+                        globalResourcesData.push(newCat); 
+                        renderResources(globalResourcesData); populateAdminCategories();
+                        
+                        // Select newly created
+                        adminCategorySelect.value = newCat.id;
+                        adminCategorySelect.dispatchEvent(new Event('change'));
+                        
+                    } else if (catId) {
+                        // UPDATE CATEGORY TITLE & TOPICS
+                        const cat = globalResourcesData.find(c => (c.id || c.title) === catId);
+                        cat.title = adminCategoryTitle.value || cat.title; // update title
+                        
+                        if (topicIdx === 'new') {
+                            // CREATE NEW TOPIC IN EXISTING CATEGORY
+                            cat.links.push({
+                                name: adminTopicTitle.value || "New Document",
+                                icon: "fa-file-lines", // Default icon
+                                content: adminContentTextarea.value || ""
+                            });
+                        } else if (topicIdx !== "") {
+                            // UPDATE EXISTING TOPIC
+                            cat.links[topicIdx].name = adminTopicTitle.value || cat.links[topicIdx].name;
+                            cat.links[topicIdx].content = adminContentTextarea.value || "";
+                        }
+                        
+                        renderResources(globalResourcesData);
+                        
+                        if (dbInstance && cat.id && !cat.id.startsWith('temp_')) {
+                            await updateDoc(doc(dbInstance, 'artifacts', appId, 'public', 'data', 'examResources', cat.id), { 
+                                title: cat.title, 
+                                links: cat.links 
+                            });
+                        }
+                        
+                        // Refresh UI maintaining selection
+                        const selectedTopic = topicIdx === 'new' ? (cat.links.length - 1).toString() : topicIdx;
+                        adminCategorySelect.dispatchEvent(new Event('change'));
+                        if(selectedTopic !== "") {
+                            adminTopicSelect.value = selectedTopic;
+                            adminTopicSelect.dispatchEvent(new Event('change'));
+                        }
+                    }
+                } 
+                else if (section === 'courses') {
+                    const id = adminCourseSelect.value;
+                    if (id === 'new') {
+                        const newC = { title: adminCourseTitle.value, price: adminCoursePrice.value, duration: adminCourseDuration.value, desc: adminCourseDesc.value, whatsapp: adminCourseWhatsapp.value || "918017353511", order: globalCoursesData.length + 1 };
+                        if (dbInstance) { const ref = await addDoc(collection(dbInstance, 'artifacts', appId, 'public', 'data', 'courses'), newC); newC.id = ref.id; } 
+                        else { newC.id = 'temp_' + Date.now(); }
+                        globalCoursesData.push(newC); renderCourses(globalCoursesData); populateAdminCourses();
+                        adminCourseSelect.value = newC.id; adminDeleteCourseBtn.classList.remove('hidden'); adminSaveBtn.innerHTML = "Save Changes";
                     } else {
-                        await signInAnonymously(auth);
-                    }
-                    
-                    currentUser = auth.currentUser;
-                    if (!currentUser) return;
-
-                    dbInstance = db;
-
-                    const resourcesRef = collection(db, 'artifacts', appId, 'public', 'data', 'examResources');
-                    
-                    // Check and seed DB
-                    const snapshot = await getDocs(resourcesRef);
-                    if (snapshot.empty) {
-                        for (const resource of defaultExamResources) {
-                            await addDoc(resourcesRef, resource);
+                        const c = globalCoursesData.find(x => x.id === id);
+                        c.title = adminCourseTitle.value; c.price = adminCoursePrice.value; c.duration = adminCourseDuration.value; c.desc = adminCourseDesc.value; c.whatsapp = adminCourseWhatsapp.value;
+                        renderCourses(globalCoursesData);
+                        if (dbInstance && c.id && !c.id.startsWith('temp_')) {
+                            await updateDoc(doc(dbInstance, 'artifacts', appId, 'public', 'data', 'courses', c.id), { title: c.title, price: c.price, duration: c.duration, desc: c.desc, whatsapp: c.whatsapp });
                         }
                     }
-
-                    // Listen for live updates
-                    onSnapshot(resourcesRef, (snap) => {
-                        if (snap.empty) {
-                            globalResourcesData = [...defaultExamResources];
-                            renderResources(defaultExamResources);
-                            return;
-                        }
-                        
-                        let resourcesData = [];
-                        snap.forEach(doc => {
-                            resourcesData.push({id: doc.id, ...doc.data()});
-                        });
-                        
-                        // Sort by order so they render properly
-                        resourcesData.sort((a, b) => a.order - b.order);
-                        globalResourcesData = resourcesData; // Cache data for admin dashboard
-                        renderResources(resourcesData);
-                        
-                    }, (error) => {
-                        console.error("Error fetching resources:", error);
-                        globalResourcesData = [...defaultExamResources];
-                        renderResources(defaultExamResources); // fallback
-                    });
-                } else {
-                    // Fallback if no firebase config provided in environment
-                    globalResourcesData = [...defaultExamResources];
-                    renderResources(defaultExamResources);
                 }
-            } catch (error) {
-                console.error("Initialization failed:", error);
-                globalResourcesData = [...defaultExamResources];
-                renderResources(defaultExamResources); // fallback
-            }
+                adminSaveStatus.classList.remove('hidden'); setTimeout(() => adminSaveStatus.classList.add('hidden'), 3000);
+            } catch (err) { console.error(err); }
+            if(adminSaveBtn.innerHTML.includes('Saving')) adminSaveBtn.innerHTML = 'Save Changes';
+            adminSaveBtn.disabled = false;
+        });
+
+        // PDF Generation
+        function openModal(title, iconClass, content) {
+            modalTitleText.innerText = title; modalIcon.className = `fa-solid ${iconClass} text-gold-400`;
+            modalContent.innerHTML = `<p class="whitespace-pre-wrap">${content}</p>`; currentDownloadContent = content; currentDownloadTitle = title;
+            modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('opacity-0'); modalPanel.classList.remove('scale-95'); }, 10);
+        }
+        function closeModal() {
+            modal.classList.add('opacity-0'); modalPanel.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+        closeModalBtn.addEventListener('click', closeModal); modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        downloadBtn.addEventListener('click', () => {
+            if (!currentDownloadContent) return;
+            try {
+                const { jsPDF } = window.jspdf; const doc = new jsPDF();
+                doc.setTextColor(230, 230, 230); doc.setFontSize(40); doc.text("English Teacher Ji", doc.internal.pageSize.getWidth()/2, doc.internal.pageSize.getHeight()/2, { angle: 45, align: "center" });
+                doc.setTextColor(20, 20, 20); doc.setFontSize(18); doc.setFont("helvetica", "bold"); doc.text(currentDownloadTitle, 20, 20);
+                doc.setDrawColor(245, 158, 11); doc.setLineWidth(1); doc.line(20, 26, 190, 26);
+                doc.setTextColor(50, 50, 50); doc.setFontSize(11); doc.setFont("helvetica", "normal");
+                doc.text(doc.splitTextToSize(currentDownloadContent, 170), 20, 36);
+                doc.save(currentDownloadTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + ".pdf");
+                const orig = downloadBtn.innerHTML; downloadBtn.innerHTML = `<i class="fa-solid fa-check"></i> Downloaded!`; downloadBtn.classList.add('bg-green-500','text-white'); downloadBtn.classList.remove('bg-white','text-black');
+                setTimeout(() => { downloadBtn.innerHTML = orig; downloadBtn.classList.remove('bg-green-500','text-white'); downloadBtn.classList.add('bg-white','text-black'); }, 3000);
+            } catch (err) { console.error(err); showCustomAlert("PDF generation failed."); }
+        });
+
+        // Renders
+        function renderCourses(courses) {
+            coursesContainer.innerHTML = '';
+            [...courses].sort((a,b) => (a.order||0) - (b.order||0)).forEach(c => {
+                const div = document.createElement('div');
+                div.className = "glass-panel glass-card rounded-2xl p-8 flex flex-col justify-between";
+                const phone = c.whatsapp ? c.whatsapp.replace(/[^0-9]/g, '') : "918017353511";
+                div.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-4 gap-2">
+                            <h3 class="text-2xl font-serif font-bold text-white leading-tight">${c.title}</h3>
+                        </div>
+                        <span class="inline-block bg-white/10 border border-white/5 text-xs text-gold-400 py-1.5 px-3 rounded-md font-medium tracking-wide mb-6">${c.duration}</span>
+                        <p class="text-gray-400 text-sm mb-8 leading-relaxed font-light">${c.desc}</p>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-white mb-6">${c.price}</div>
+                        <a href="https://wa.me/${phone}?text=${encodeURIComponent(`Hello English Teacher Ji! I want to enquire about the "${c.title}" course.`)}" target="_blank" class="w-full block text-center bg-gold-400 hover:bg-gold-500 text-black font-semibold py-3.5 rounded-xl transition duration-300">
+                            <i class="fa-brands fa-whatsapp mr-2"></i> Enquire Now
+                        </a>
+                    </div>
+                `;
+                coursesContainer.appendChild(div);
+            });
         }
 
-        // Render Dynamic Grid Cards
         function renderResources(categories) {
             container.innerHTML = ''; 
-            
-            categories.forEach(category => {
-                // Fixed Layout: Using h-full and flex column to ensure content doesn't overlap
-                const card = document.createElement('div');
-                card.className = `bg-gradient-to-br ${category.themeClass} rounded-2xl p-6 shadow-lg hover-lift border ${category.borderClass} h-full flex flex-col`;
-                
-                let linksHTML = '';
-                category.links.forEach((link, index) => {
-                    linksHTML += `
-                        <li class="mb-3 last:mb-0">
-                            <button data-cat-id="${category.id || category.title}" data-link-index="${index}" class="resource-btn w-full text-left flex items-start sm:items-center text-gray-100 hover:text-white transition group leading-snug">
-                                <i class="fa-solid ${link.icon} w-6 mt-1 sm:mt-0 flex-shrink-0 group-hover:scale-110 transition-transform text-yellow-300/80 group-hover:text-yellow-300"></i> 
-                                <span>${link.name}</span>
-                            </button>
-                        </li>
-                    `;
-                });
-
-                card.innerHTML = `
-                    <h3 class="text-xl font-bold text-white mb-4 border-b border-white/20 pb-2 flex-shrink-0">${category.title}</h3>
-                    <ul class="flex-grow flex flex-col justify-start">
-                        ${linksHTML}
-                    </ul>
-                `;
-                container.appendChild(card);
+            categories.forEach(cat => {
+                const div = document.createElement('div');
+                div.className = `glass-panel glass-card rounded-2xl p-6 border ${cat.themeClass || 'border-white/10'} h-full flex flex-col`;
+                let links = '';
+                if(cat.links) {
+                    cat.links.forEach((l, i) => {
+                        links += `<li class="mb-4 last:mb-0"><button data-cat="${cat.id||cat.title}" data-idx="${i}" class="res-btn w-full text-left flex items-start text-gray-300 hover:text-white transition group"><div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-white/10"><i class="fa-solid ${l.icon} text-sm text-gold-400"></i></div><span class="mt-1 text-sm font-medium leading-tight">${l.name}</span></button></li>`;
+                    });
+                }
+                div.innerHTML = `<h3 class="text-xl font-serif font-bold text-white mb-6 pb-4 border-b border-white/10">${cat.title}</h3><ul class="flex-grow flex flex-col">${links}</ul>`;
+                container.appendChild(div);
             });
-
-            // Re-attach event listeners for newly rendered buttons
-            document.querySelectorAll('.resource-btn').forEach(btn => {
+            document.querySelectorAll('.res-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    const catId = e.currentTarget.getAttribute('data-cat-id');
-                    const linkIndex = e.currentTarget.getAttribute('data-link-index');
-                    const category = categories.find(c => c.id === catId || c.title === catId);
-                    
-                    if(category && category.links[linkIndex]) {
-                        const resource = category.links[linkIndex];
-                        openModal(`${category.title}: ${resource.name}`, resource.icon, resource.content);
-                    }
+                    const cId = e.currentTarget.getAttribute('data-cat'); const idx = e.currentTarget.getAttribute('data-idx');
+                    const cat = categories.find(c => c.id === cId || c.title === cId);
+                    if(cat && cat.links[idx]) openModal(`${cat.title}: ${cat.links[idx].name}`, cat.links[idx].icon, cat.links[idx].content);
                 });
             });
         }
 
-        // Boot up
+        // Init
+        async function initApp() {
+            try {
+                const config = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+                if (Object.keys(config).length > 0) {
+                    const app = initializeApp(config); dbInstance = getFirestore(app); const auth = getAuth(app);
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) await signInWithCustomToken(auth, __initial_auth_token); else await signInAnonymously(auth);
+                    if (!auth.currentUser) return;
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'english-teacher-ji';
+                    
+                    onSnapshot(collection(dbInstance, 'artifacts', appId, 'public', 'data', 'examResources'), (snap) => {
+                        if (snap.empty) globalResourcesData = [...defaultExamResources]; else { globalResourcesData = []; snap.forEach(d => globalResourcesData.push({id: d.id, ...d.data()})); globalResourcesData.sort((a,b) => a.order - b.order); }
+                        renderResources(globalResourcesData);
+                    });
+                    
+                    const cRef = collection(dbInstance, 'artifacts', appId, 'public', 'data', 'courses');
+                    if((await getDocs(cRef)).empty) for(const c of defaultCourses) await addDoc(cRef, c);
+                    onSnapshot(cRef, (snap) => {
+                        if (snap.empty) globalCoursesData = [...defaultCourses]; else { globalCoursesData = []; snap.forEach(d => globalCoursesData.push({id: d.id, ...d.data()})); }
+                        renderCourses(globalCoursesData);
+                    });
+                } else {
+                    globalResourcesData = [...defaultExamResources]; globalCoursesData = [...defaultCourses];
+                    renderResources(globalResourcesData); renderCourses(globalCoursesData);
+                }
+            } catch (e) {
+                console.error(e); globalResourcesData = [...defaultExamResources]; globalCoursesData = [...defaultCourses];
+                renderResources(globalResourcesData); renderCourses(globalCoursesData);
+            }
+        }
         initApp();
     </script>
 </body>
